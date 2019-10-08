@@ -1,0 +1,32 @@
+// Get the contacts from given mobile/phone number 
+response = zoho.crm.searchRecords("Contacts","(Mobile:equals:" + mobilenumber + ")");
+field_to_be_updated = "";
+if(response.isEmpty()) {
+	info 'No matching contact record found. Searching Leads';
+	response = zoho.crm.searchRecords("Leads","(Mobile:equals:" + mobilenumber + ")");
+	if(response.isEmpty()) {
+		info 'Could not find any contact or lead with given mobile number: '+ mobilenumber;
+        return;
+	} else {
+    	field_to_be_updated = "smsmagic4__Lead";
+    	record_id = response.get(0).get("id");
+        info "Found lead with id: " + record_id;
+	}
+}
+else {
+    field_to_be_updated = "smsmagic4__Contact";
+    record_id = response.get(0).get("id");
+    info "Found contact with id: " + record_id;
+}
+info "Getting sms history record with id: " + sms_history_id;
+historyinfo = zoho.crm.getRecordById("smsmagic4.SMS_History",sms_history_id);
+if ("Failure".equalsIgnoreCase(historyinfo.get("status"))) {
+	info "No SMS History record was found for the id: " + sms_history_id;
+} else {
+	info "Found SMS History record. Updating it...";
+	params = Map();
+	params.put(field_to_be_updated, record_id.toLong());
+	response = zoho.crm.updateRecord("smsmagic4.SMS_History", sms_history_id.toLong(), params);
+	info response;
+}
+

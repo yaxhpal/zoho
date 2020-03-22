@@ -26,6 +26,9 @@ jQuery.fn.extend({
 });
 
 $(document).ready(function () {
+    
+    $("body").removeClass("loading");  
+
     $('.sender-id-item').click(function () {
         senderId = $(this).text();
         $('#selected-sender-id').val(senderId)

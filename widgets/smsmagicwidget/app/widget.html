@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  </script>
+  <script src="../app/js/ZohoEmbededAppSDK-1.0.5.min.js"></script>
+  <script src="../app/js/sendEmail.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="../app/css/sendEmail.css" rel="stylesheet">
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet"
+    type="text/css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+  <div id="loader"></div>
+
+  <div id="Error" class="overlay">
+    <div class="text" id="ErrorText"> </div>
+    <div id="dateTime" class="dateTime">
+      <div class="scheduleIcon material-icons">schedule</div>
+      <input type="text" id="datepicker" />
+      <div class="timings">
+        <select style="width:105px;height:36px;background-color:white;margin-left:15px;" id="timeList">
+        </select>
+      </div>
+      <div class="scheduleClose send" onclick="scheduleClose()">Schedule</div>
+      <div class="scheduleClose cancel" onclick="cancel()">Cancel</div>
+    </div>
+  </div>
+
+  </div>
+  <div id="emailer">
+    <div class="template" style="margin-top:10px;margin-left:40px;">
+      <div class="dropdown">
+        <button type="button" style="float:left;border:1px solid grey;background-color:white;"
+          data-toggle="dropdown"><span style="float:left;" class="choose" id="selectedTemplate"> Choose Template</span>
+          <span class="arrowIcon"></span>
+        </button>
+        <ul class="dropdown-menu" id="templateList" style="max-width:185px;min-width:185px;">
+        </ul>
+        <span class="tooltiptext" id="tooltiptext">Choose Template</span>
+      </div>
+    </div>
+
+    <div id="contentDiv" class="mappingDiv">
+
+      <div id="emailEditorsEmail">
+        <div id="emailEditorEmail">
+          <div class="insert">
+            <div style="float:left;">Message</div>
+            <div style="float:right;min-height:30px;padding-left:10px;margin-right:7px;" class="dropdown dropdown  ">
+              <button id="moduleFields" class="btnn dropdown-toggle" style="width:188px;" type="button"
+                data-toggle="dropdown">Insert Contact Fields
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu" style="max-width:190px;min-width:190px;" id="dropdown-menu-email">
+              </ul>
+            </div>
+            <div style="float:right;min-height:30px;padding-left:10px;" class="dropdown dropdown  ">
+              <button class="btnn dropdown-toggle" type="button" data-toggle="dropdown">Insert User Fields
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu" id="dropdown-menu-user">
+              </ul>
+            </div>
+          </div>
+          <div class="editable notranslate" contenteditable="true" id="emailContentEmail" onmouseup="openlink()"></div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="send" style="margin-top:5px;" id="send" onClick="sendSMS()">
+          Send
+        </div>
+        <div class="scheduleCheck" style="margin-top:5px;"><input type="checkbox" id="scheduleCheck"
+            style="font-size:30px;cursor: pointer;" onchange="enableSchedule(this)"></div>
+        <div class="schedule" id="dateTimeText" style="margin-top:5px;">
+          Schedule on <span class="dateTimeText" style="color:blue;cursor:pointer;" id="scheduledDateTime"
+            onclick="openDatePicker()"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

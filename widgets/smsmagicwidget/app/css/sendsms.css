@@ -29,7 +29,8 @@ body.loading .modal {
     display: block;
 }
 
-.btn:focus, textarea {
+.btn:focus, textarea, .no-focus {
     outline: none !important;
     box-shadow:none !important;
 }
+

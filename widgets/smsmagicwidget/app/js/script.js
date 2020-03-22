@@ -26,22 +26,47 @@ jQuery.fn.extend({
 });
 
 $(document).ready(function () {
-    
+    $.fn.updateProgress = function() {
+        ssid = $.trim($('#selected-sender-id').val()).length;
+        txtval = $.trim($('#message-text').val()).length;
+        console.log("XXX: " + ssid);
+        console.log("YYY: " + txtval);
+        if(ssid && txtval) {
+            $('#progress-bar').width('100%');  
+        } else if (ssid) {
+            $('#progress-bar').width('50%');
+        } else if (txtval) {
+            $('#progress-bar').width('50%');
+        } else {
+            $('#progress-bar').width('2%');
+        }
+    };
+
     $("body").removeClass("loading");  
 
     $('.sender-id-item').click(function () {
         senderId = $(this).text();
-        $('#selected-sender-id').val(senderId)
+        $('#selected-sender-id').val(senderId);
+        $.fn.updateProgress()
     });
 
     $('.template-item').click(function () {
         templateName = $(this).text();
         $('#selected-template').val(templateName)
+        $.fn.updateProgress()
     });
 
     $('.record-field-item').click(function () {
         recordField = "${" + $(this).text() + "}";
         $('#message-text').insertAtCaret(recordField);
+        $.fn.updateProgress()
     });
 
+    $('#message-text').blur(function() {
+        $.fn.updateProgress()
+    });
+
+    $('#reset-form').click(function() {
+        $('#progress-bar').width('2%');
+    });
 });

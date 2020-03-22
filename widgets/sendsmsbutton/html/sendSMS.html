@@ -1,0 +1,291 @@
+<html>
+<head>
+<title>Create Template</title>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400,600,700" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="../css/send-sms-style.css"> 
+ <script type="text/javascript" src="../lib/ZohoEmbededAppSDK.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/handlebars-v4.0.10.js"></script>
+    <script type="text/javascript" src="../js/createTemp.js"></script>
+</head>
+<style type="text/css">
+    /* Loading Animation Start*/
+#Loading {
+    background-color: #f8e3c8;
+    border: 1px solid #fac9a1;
+    border-bottom-left-radius:3px;
+    border-bottom-right-radius:3px;
+    left: 45%;
+    padding: 3px 5px;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 80px;
+    z-index: 55;
+}
+
+div#Loading span {
+    font-size: 15px;
+    line-height: 10px;
+}
+.layoutLoad {
+    clear: both;
+    float: left;
+    width: 31px;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    margin-left: -15px;
+}
+.layoutLoad span {
+    width: 6px;
+    height: 16px;
+    background: #a7a7a7;
+    display: inline-block;
+    margin-right: 2px;
+    border-radius: 3px;
+}
+.one {
+    opacity: 1;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.0s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.0s;
+}
+
+.two2 {
+    opacity: 1;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.2s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.2s;
+}
+
+.three {
+    opacity: 1;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.3s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.3s;
+}
+
+@-webkit-keyframes dot {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes dot {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/******* success message ********/
+
+
+/*-----------commen style------*/
+.popapulbge{width:500px; padding:50px; box-sizing: border-box; margin:0 auto; z-index: 999999;}
+
+
+.success{width:45%; height:42px; background:#fff; border:1px solid #3ec00a; margin:0 auto; border-radius: 3px; box-shadow: 0px 2px 15px rgba(0, 0, 0, .2);}
+.iconbox{width:10%; height: 100%; background: #3fbd5f; border-radius: 3px 0px 0px 3px; float: left; position: relative;}
+/*.iconbox::after{
+content: "";
+border-top: 7px solid transparent;
+border-bottom: 8px solid transparent;
+border-left: 8px solid #3ec00a;
+border-right: 8px solid transparent;
+position: absolute;
+top: 14px;
+right: -14px;
+}*/
+.sucesText
+{
+width: 77%;
+color: #222;
+margin-top: 12px;
+position: relative;
+float: left;
+margin-left: 20px;
+box-sizing: border-box;
+font-size: 15px;
+}
+.successicon{background-image:url(../image/icon-success.png); background-repeat: no-repeat; position: absolute; transform: translate(-50%,-50%); width:30px; height: 30px; background-position: 6px 6px; left:50%;top:50%;}
+/*.clo-icon{
+content: "";
+width: 22px;
+height: 20px;
+background-image: url(../image/icon-msg.png);
+background-repeat: no-repeat;
+background-position: 0px -4px;
+top: 0px;
+cursor: pointer;
+float: left;
+margin-top: 14px;
+margin-right: 20px;
+}*/
+
+</style>
+<body>
+<div id="loading">Loading<span class="one">.</span><span class="two2">.</span><span class="three">.</span></div>
+<div class="popapulbge dT" id="successMsg" style="position: fixed;display: none;">
+    
+<div class="success" style="margin-left: 131px; position: fixed; "><span class="iconbox"><span class="successicon"></span></span><span class="sucesText f16 fR">Template Created Successfully</span><span class="clo-icon">&nbsp;</span></div>
+    </div>
+    </div>
+    <div id="create" style="display: none;">
+    <div class="popapulbg" >
+    <div class="popapul">
+    <div class="head" onclick="skip()">Create Template</div>
+    <div class="filed clearfix" style="margin-top: 20px;"><label class="fldText">Template Name</label><input class="fldtype" type="text" name="" id="templateName" style="width:50%;" required="This field cannot be left empty"/></div>
+        <div style="float:left; display: none;font-size: 10px;color: rgb(255,0,0);padding-left: 300px;" id="tempNameEmptyDiv">This field cannot be left empty.</div>
+    <div class="fldMsg clearfix">
+    <label class="fldText Text1">Message</label>
+    <span class="fldSelect clearfix"><i class="sltText">Select Field</i>
+
+    <div class="newSelect" id="fieldnames" style="width: 150px;margin-right: 10px;"></div>
+                <script id="fieldsList" type="text/x-handlebars-template">
+                    <div>
+                        <select id="selectOption" onchange="addField()" class="sltInput" style="border-bottom: 1px solid #cecece;">
+                        <option id="none">--None--</option>
+                            {{#each fields}}
+                            <option>{{api_name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                  </script>
+            
+
+    </span>
+    </div>
+    <textarea class="msgBox" id="templateTxt"></textarea>
+         <div style="float:left; display: none;font-size: 10px;color: rgb(255,0,0);" id="templateEmptyAlert">This field cannot be left empty.</div>
+    <div class="link"><button class="btn save" onclick="update()">Save</button><button class="btn cancel" onclick="skip()">Cancel</button></div>
+    </div>
+    </div>
+    </div>
+    <div id="getTemp">
+<div class="popapulbg">
+    <div class="popapul">
+<div class="filed clearfix">
+        <label class="fldText">Select Your Number</label>
+                 <div id="listNumbers" class="newSelect" style="margin-left:20px;"></div>
+                                <script type="text/x-handlebars-template" id="fromNum">
+                                    <select id="toNumber" class="fldtype">
+                                    {{#unless Phone}}<option>No Phone Numbers Found</option>{{/unless}}
+                    {{#each Phone}}
+                        <option value={{PhoneNumber}}>
+                            {{FriendlyName}}:{{PhoneNumber}}
+                        </option>
+                    {{/each}}
+                    </select>
+                                </script>
+    </div>
+    
+<div class="resipient">
+    <label class="fldText">Recipients</label>
+    <ul class="contact" id="recipientsList">
+    </ul>
+    <div class="viewmore-div">
+    <div style="float:left; display: none;font-size: 10px;color: rgb(255,0,0);" id="recp">At least one recipient needs to be selected.</div>
+        <a href="#" class="Textbtn" id="view">+View More</a>
+    </div>
+    </div>
+
+
+<div class="filed1 clearfix">
+    <div class="first"><label class="fldText">Choose a Template</label>
+            <div id="templist" class="newSelect"></div>
+                                <script type="text/x-handlebars-template" id="templates">
+                                    <div style="float: left;    width: 100%;" id="listTemplatesDiv">
+                                        <!--<select id="temp" onclick="listTemplates()" class="fldtype1">-->
+                                        <select id="temp" onchange="listTemplates()" class="fldtype1">
+<option id="none">--None--</option>
+                {{#if obj}}{{#each obj}}
+                <option value={{id}}>{{[CustomModule2_Name]}}</option>
+                {{/each}}{{/if}}
+                                                       
+   
+            </select>
+                                    </div>
+                                </script>
+    </div>
+    <div class="two"><button class="addbtn" onclick="addTemp()" style="cursor: pointer;">Create Template</button></div>
+    </div>
+
+<div class="fldMsg clearfix"><label class="fldText Text1">Message</label></div>
+    <textarea class="msgBox" name="msgTxt" id="msgTxt"></textarea>
+     <div style="float:left; display: none;font-size: 10px;color: rgb(255,0,0);" id="msgEmptyAlert">This field cannot be left empty.</div>
+    <div class="link">
+    <button class="btn save" onclick="sendsms()">Send</button>
+    <button class="btn cancel" onclick="closePopUp(true)">Cancel</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div id="wrongOrgVar" style="display: none;">
+        <h3>
+            Authentication variables not configured correctly... Please enter the correct value in settings...
+        </h3>
+    </div>
+    
+    
+    <div style="z-index: 999999 " id="statusReport"></div>
+ <script type="text/x-handlebars-template" id="reportScript">
+    <div class="popapul">
+        <div id="report" style="display:none;">
+            <div style="background-color: #ffffff"></div>
+           
+                
+                <div class="head">SMS Summary</div>
+                <table class="recipients_tbl" border="0" cellpadding="0" cellspacing="0">
+                   
+                        <tr class="headerRow">
+                            <th width="30%">
+                                <div>Name</div>
+                            </th>
+                            <th width="30%">
+                                <div>Mobile</div>
+                            </th>
+                            <th width="30%">
+                                <div>Status</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="padding:0;height:3px;border-top: solid 1px #ddd;"> 
+                                
+                            </td>
+                        </tr>
+                        {{#each data}}
+                        <tr class="dataRow">
+                            <td>{{Name}}</td>
+                            <td>{{Mobile}}</td>
+                            <td>{{Status}}</td>
+                        </tr>
+                        {{/each}}
+                   
+                </table>
+            </div>
+            <div>
+               
+                <input type="button" value="Close" class="btn save" onclick="closePopUp(true)">
+            </div>
+            </div>
+   </script> 
+    </div>
+</body>
+</html>

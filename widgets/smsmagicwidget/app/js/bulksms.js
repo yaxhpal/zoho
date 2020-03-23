@@ -73,6 +73,16 @@ var scheduledTime;
 var Mobile;
 var func_name;
 
+function addListItem(menudId, itemLabel, itemValue, itemId) {
+    if (itemId != null) {
+        cacheItem = '<input id="'+itemId+'" type="text" value="'+itemValue+'" />';
+        $('#value-cache').append(item);
+        itemValue = itemId;
+    }
+    item = '<a class="dropdown-item '+menudId+'-item" href="#" data-value="'+itemValue+'">'+itemLabel+'</a>'; 
+    $("#"+menudId).append(item);
+}
+
 document.addEventListener("DOMContentLoaded", function (event) {
 
     ZOHO.embeddedApp.on("PageLoad", function (record) {
@@ -86,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             Entity: recordModule
         }).then(function (data) {
             data.fields.forEach(function (field) {
-                addListItem("record-fields", field.field_label, recordModule + "__" + field.api_name);
+                addListItem("record-fields", field.field_label, recordModule + "__" + field.api_name, null);
             });
         })
 
@@ -99,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }).then(function (data) {
             smsTemplates = data.data;
             smsTemplates.forEach(function (template) {
-                addListItem("sms-templates", template.Name, template.smsmagic4__Text);
+                addListItem("sms-templates", template.Name, template.smsmagic4__Text, template.id);
             });
         })
 
@@ -115,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 if (senderId.Name == null || senderId.Name == "") {
                     senderId.Name = senderId.smsmagic4__SenderId;
                 }
-                addListItem("sms-sender-ids", senderId.Name, senderId.smsmagic4__SenderId);
+                addListItem("sms-sender-ids", senderId.Name, senderId.smsmagic4__SenderId, null);
             });
         })
 

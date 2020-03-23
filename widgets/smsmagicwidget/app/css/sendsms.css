@@ -34,3 +34,9 @@ body.loading .modal {
     box-shadow:none !important;
 }
 
+
+.dropdown-menu{
+    max-height:300px !important;
+    overflow-y:auto;
+}
+

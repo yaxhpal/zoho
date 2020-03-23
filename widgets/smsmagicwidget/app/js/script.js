@@ -44,19 +44,21 @@ $(document).ready(function () {
 
     $("body").removeClass("loading");  
 
-    $('.sender-id-item').click(function () {
+    $('.sender-ids-item').click(function () {
         senderId = $(this).text();
         $('#selected-sender-id').val(senderId);
         $.fn.updateProgress()
     });
 
-    $('.template-item').click(function () {
+    $('.sms-templates-item').click(function () {
         templateName = $(this).text();
         $('#selected-template').val(templateName)
         $.fn.updateProgress()
+        templateText = $('#' + $(this).data("value")).val()
+        $('#message-text').val(templateText);
     });
 
-    $('.record-field-item').click(function () {
+    $('.record-fields-item').click(function () {
         recordField = "${" + $(this).text() + "}";
         $('#message-text').insertAtCaret(recordField);
         $.fn.updateProgress()

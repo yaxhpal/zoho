@@ -30,13 +30,13 @@
           <div class="form-group">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split rounded-0" id="sms-sender_ids" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split rounded-0" id="sender_ids" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Sender Id<span class="invisible">,,,</span>
                 </button>
-                <div class="dropdown-menu rounded-0" aria-labelledby="sms-sender_ids">
-                  <a class="dropdown-item sender-id-item" href="#">145784754854</a>
-                  <a class="dropdown-item sender-id-item" href="#">121323123213</a>
-                  <a class="dropdown-item sender-id-item" href="#">123423423432</a>
+                <div class="dropdown-menu rounded-0" aria-labelledby="sender_ids">
+                  <a class="dropdown-item sender-ids-item" href="#">145784754854</a>
+                  <a class="dropdown-item sender-ids-item" href="#">121323123213</a>
+                  <a class="dropdown-item sender-ids-item" href="#">123423423432</a>
                 </div>
               </div>
               <input type="text" id="selected-sender-id" class="form-control no-focus rounded-0" aria-label="Text input with segmented dropdown button" readonly>
@@ -49,11 +49,11 @@
                 <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Template<span class="invisible">__,</span>
                 </button>
-                <div class="dropdown-menu rounded-0" aria-labelledby="sms-templates">
-                  <a class="dropdown-item template-item" href="#">Welcome Message</a>
-                  <a class="dropdown-item template-item" href="#">Event Euro2020 Promotion</a>
-                  <a class="dropdown-item template-item" href="#">Event Reminder</a>
-                  <a class="dropdown-item template-item" href="#">New Offer</a>
+                <div class="dropdown-menu rounded-0" aria-labelledby="sms-templates" >
+                  <a class="dropdown-item sms-templates-item" data-value="12345678" href="#">Welcome Message</a>
+                  <a class="dropdown-item sms-templates-item" data-value="12345679" href="#">Event Euro2020 Promotion</a>
+                  <a class="dropdown-item sms-templates-item" data-value="12345690" href="#">Event Reminder</a>
+                  <a class="dropdown-item sms-templates-item" data-value="12345623" href="#">New Offer</a>
                 </div>
               </div>
               <input type="text" id="selected-template" class="form-control no-focus rounded-0" aria-label="Text input with segmented dropdown button" readonly>
@@ -63,14 +63,14 @@
           <div class="form-group">
             <div class="btn-group float-right">
               <button class="btn btn-info dropdown-toggle rounded-0" type="button" id="sms-fields"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-boundary="scrollParent">
                 Insert record's field
               </button>
-              <div id="drop-2" class="dropdown-menu rounded-0" aria-labelledby="sms-fields">
-                <a class="dropdown-item record-field-item" href="#">First name</a>
-                <a class="dropdown-item record-field-item" href="#">Last Name</a>
-                <a class="dropdown-item record-field-item" href="#">Phone</a>
-                <a class="dropdown-item record-field-item" href="#">Email</a>
+              <div id="record-fields" class="dropdown-menu rounded-0" aria-labelledby="sms-fields">
+                <a class="dropdown-item record-fields-item" href="#">First name</a>
+                <a class="dropdown-item record-fields-item" href="#">Last Name</a>
+                <a class="dropdown-item record-fields-item" href="#">Phone</a>
+                <a class="dropdown-item record-fields-item" href="#">Email</a>
               </div>
             </div>
           </div>
@@ -79,13 +79,24 @@
               rows="10" required></textarea>
           </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="border-top: 0px;">
           <button type="button" class="btn btn-secondary rounded-0" data-dismiss="modal">Cancel</button>
           <button id="reset-form" type="reset" class="btn btn-warning rounded-0" >Reset</button>
           <button type="button" class="btn btn-info rounded-0" >Send message</button>
       </div>
     </div>
   </form>
+  </div>
+  <div id="value-cache" class="invisible">
+    <input id="12345678" type="text" value="Hi ${First_Name}, How was you trip to Europe?" />
+    <input id="12345679" type="text" value="Hello Mr. ${Last_name}, How was you trip to Europe?" />
+    <textarea id="12345690">Hi ${firstname},
+how is your vacation?
+Regards,
+Neemchand
+    </textarea>
+    <input id="12345691" type="text" value="Hi \ How was you trip to USA?" />
+    <input id="12345623" type="text" value="Hi ${First_Name}, You are making progress.?" />
   </div>
   <div class="modal"></div>
 </body>

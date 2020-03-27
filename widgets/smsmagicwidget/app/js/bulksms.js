@@ -8,10 +8,18 @@ var Mobile;
 function addListItem(menudId, itemLabel, itemValue, itemId) {
     if (itemId != null) {
         cacheItem = '<textarea id="' + itemId + '">' + itemValue + '</textarea>';
-        $('#value-cache').append(item);
+        $('#value-cache').append(cacheItem);
         itemValue = itemId;
     }
-    item = '<a class="dropdown-item ' + menudId + '-item" href="#" data-value="' + itemValue + '">' + itemLabel + '</a>';
+    funcName = "";
+    if (menudId == "record-fields") {
+        funcName = "insertField";
+    } else if (menudId == "sms-templates") {
+        funcName = "insertTemplate";   
+    } else {
+        funcName = "insertSenderId";
+    }
+    item = '<a onclick="'+funcName+'(this);" class="dropdown-item ' + menudId + '-item" href="#" data-value="' + itemValue + '">' + itemLabel + '</a>';
     $("#" + menudId).append(item);
 }
 
@@ -19,20 +27,31 @@ function showError(message) {
     console.log(message);
 }
 
-function initializeWidget() {
+function closePopUp(toReload) {
+    if (toReload) {
+        return ZOHO.CRM.UI.Popup.closeReload();
+    } else {
+        return ZOHO.CRM.UI.Popup.close();
+    }
+}
 
+function toggleLoading() {
+    $("body").toggleClass("loading");
+}
+
+function initializeWidget() {
     ZOHO.embeddedApp.on("PageLoad", function (record) {
         console.log("Zoho Page loading....")
         recordId = record.EntityId;
         recordModule = record.Entity;
         ButtonPosition = record.ButtonPosition;
-        selectModule(recordModule);
 
         // Get all the field names for this module
         ZOHO.CRM.META.getFields({
             Entity: recordModule
         }).then(function (data) {
             console.log(JSON.stringify(data));
+            toggleLoading();
             data.fields.forEach(function (field) {
                 addListItem("record-fields", field.field_label, recordModule + "__" + field.api_name, null);
             });
@@ -40,11 +59,12 @@ function initializeWidget() {
 
         // Get all the SMS templates
         ZOHO.CRM.API.getAllRecords({
-            Entity: "smsmagic4__SMS_Templates",
+            Entity: "smsmagic4__SMS_Template",
             sort_order: "desc",
             per_page: 50,
             page: 1
         }).then(function (data) {
+            console.log(JSON.stringify(data));
             smsTemplates = data.data;
             smsTemplates.forEach(function (template) {
                 addListItem("sms-templates", template.Name, template.smsmagic4__Text, template.id);
@@ -58,6 +78,7 @@ function initializeWidget() {
             per_page: 50,
             page: 1
         }).then(function (data) {
+            console.log(JSON.stringify(data));
             smsSenderIds = data.data;
             smsSenderIds.forEach(function (senderId) {
                 if (senderId.Name == null || senderId.Name == "") {
@@ -82,12 +103,4 @@ function initializeWidget() {
     });
 
     ZOHO.embeddedApp.init();
-
-    // ZOHO.embeddedApp.init().then(function () {
-    //     ZOHO.CRM.API.getOrgVariable("smsmagic4__smsmagicApiKey").then(function (apiKey) {
-    //         if (apiKey && apiKey.Success && apiKey.Success.Content == "") {
-    //             showError("Please enter your SMS Magic Api Key in extension configuration page.");
-    //         }
-    //     });
-    // });
 }

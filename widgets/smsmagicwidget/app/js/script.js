@@ -40,9 +40,7 @@ $(document).ready(function () {
         } else {
             $('#progress-bar').width('2%');
         }
-    };
-
-    $("body").removeClass("loading");  
+    }; 
 
     $('.sender-ids-item').click(function () {
         senderId = $(this).text();
@@ -72,3 +70,21 @@ $(document).ready(function () {
         $('#progress-bar').width('2%');
     });
 });
+
+function insertField(fieldElement) {
+    recordField = "${" + $(fieldElement).data("value") + "}";
+    $('#message-text').insertAtCaret(recordField);
+}
+
+function insertTemplate(templateElement) {
+    templateName = $(templateElement).text();
+    $('#selected-template').val(templateName);
+    templateId = $(templateElement).data("value");
+    templateText = $('#'+templateId).val();
+    $('#message-text').val(templateText);
+}
+
+function insertSenderId(senderIdElement) {
+    senderId = $(senderIdElement).data("value");
+    $('#selected-sender-id').val(senderId);
+}

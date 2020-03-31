@@ -16,6 +16,15 @@ for each  mobile in phone_list
 	break;
    }
    
+   response = zoho.crm.searchRecords(LOOKUP_MODULE,"("+PHONE_FIELD+":equals:0"+mobile + ")");
+   for each  deal in response
+   {
+	record_id = deal.get("id");
+	info "Found deal with id: " + record_id;
+	is_record_found = True;
+	break;
+   }	
+	
    if(is_record_found)
    {
 	break;

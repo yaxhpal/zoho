@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="css/sendsms.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <script src="js/ZohoEmbededAppSDK.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/bulksms.js"></script>
+  <script src="js/smscount.js"></script>
+</head>
+
+<body class="loading">
+  <form id="message-form">
+    <div class="card rounded-0">
+      <div class="progress rounded-0" style="height: 5px;">
+        <div class="progress-bar bg-warning rounded-0" id="progress-bar" role="progressbar" style="width: 2%;"
+          aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split rounded-0" id="sender-ids-drop"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sender Id<span class="invisible">,,,</span>
+              </button>
+              <div id="sms-sender-ids" class="dropdown-menu rounded-0" aria-labelledby="sender-ids-drop">
+                <!-- <a class="dropdown-item sender-ids-item" href="#">145784754854</a> -->
+              </div>
+            </div>
+            <input type="text" id="selected-sender-id" class="form-control no-focus rounded-0"
+              aria-label="Text input with segmented dropdown button" readonly>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split rounded-0"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="sms-templates-drop">
+                Template<span class="invisible">__,</span>
+              </button>
+              <div id="sms-templates" class="dropdown-menu rounded-0" aria-labelledby="sms-templates-drop">
+                <!-- <a class="dropdown-item sms-templates-item" data-value="12345678" href="#">Welcome Message</a> -->
+              </div>
+            </div>
+            <input type="text" id="selected-template" class="form-control no-focus rounded-0"
+              aria-label="Text input with segmented dropdown button" readonly>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="btn-group float-right">
+            <button class="btn btn-secondary dropdown-toggle rounded-0" type="button" id="sms-fields" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" data-boundary="scrollParent">
+              Insert record's field
+            </button>
+            <div id="record-fields" class="dropdown-menu rounded-0" aria-labelledby="sms-fields">
+              <!-- <a class="dropdown-item record-fields-item" href="#">First name</a> -->
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control rounded-0" id="message-text" placeholder="Type you message here" rows="5"
+            required></textarea>
+            <b id="smsCount"></b> SMS (<b id="smsLength"></b>) Characters left
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: 0px;">
+        <button type="button" class="btn btn-danger rounded-0" onclick="closePopUp(false)">Cancel</button>
+        <button id="reset-form" type="reset" class="btn btn-warning rounded-0">Reset</button>
+        <button type="submit" class="btn btn-info rounded-0">Send message</button>
+      </div>
+    </div>
+  </form>
+  <div id="value-cache" class="invisible" style="display: none;"></div>
+  <div class="modal"></div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      initializeWidget();
+      $('#message-text').smsArea();
+    })
+  </script>
+</body>
+
+</html>

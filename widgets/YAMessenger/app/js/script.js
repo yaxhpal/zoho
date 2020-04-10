@@ -71,9 +71,9 @@ $(document).ready(function () {
     });
 
     $('#message-form').submit(function( event ) {
-        senderId = $('#selected-sender-id').val();
-        text = $('#message-text').val()
-        console.log(senderId + ":::::::" + text);
+        payload = collateData();
+        console.log("Record Data" + payload);
+        sendMessage(payload);
         event.preventDefault();
       });
 });
@@ -94,4 +94,11 @@ function insertTemplate(templateElement) {
 function insertSenderId(senderIdElement) {
     senderId = $(senderIdElement).data("value");
     $('#selected-sender-id').val(senderId);
+}
+
+function selectPhoneField(phoneFieldElement) {
+    phoneField = $(phoneFieldElement).text();
+    $('#selected-phone-field').val(phoneField);
+    $('#selected-phone-field').text($(phoneFieldElement).data("value"));
+    
 }

@@ -6,9 +6,8 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link href="css/sendsms.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-  </script>
+  <script src="https://kit.fontawesome.com/caf7cb58ce.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -23,7 +22,7 @@
 
 <body class="loading">
   <form id="message-form">
-    <div class="card rounded-0">
+    <div class="card border-bottom-0 rounded-0">
       <div class="progress rounded-0" style="height: 5px;">
         <div class="progress-bar bg-warning rounded-0" id="progress-bar" role="progressbar" style="width: 2%;"
           aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
@@ -62,6 +61,22 @@
         </div>
 
         <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split rounded-0"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="phone-fields-drop">
+                Phone Field
+              </button>
+              <div id="phone-fields" class="dropdown-menu rounded-0" aria-labelledby="phone-fields-drop">
+                <!-- <a class="dropdown-item sms-templates-item" data-value="12345678" href="#">Welcome Message</a> -->
+              </div>
+            </div>
+            <input type="text" id="selected-phone-field" class="form-control no-focus rounded-0"
+              aria-label="Text input with segmented dropdown button" readonly>
+          </div>
+        </div>
+
+        <div class="form-group">
           <div class="btn-group float-right">
             <button class="btn btn-secondary dropdown-toggle rounded-0" type="button" id="sms-fields" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false" data-boundary="scrollParent">
@@ -73,15 +88,19 @@
           </div>
         </div>
         <div class="form-group">
-          <textarea class="form-control rounded-0" id="message-text" placeholder="Type you message here" rows="5"
+          <textarea class="form-control rounded-0" id="message-text" placeholder="Type you message here" rows="7"
             required></textarea>
-            <b id="smsCount"></b> SMS (<b id="smsLength"></b>) Characters left
+            <span class="badge badge-light rounded-0"><b id="smsCount"></b> SMS (<b id="smsLength"></b>) Characters left</span>
+        </div>
+        <div class="form-group"></div>
+        Account Id: <span id="account-id" class="badge badge-info rounded-0">80019040</span>
+        API Key: <span id="apikey" class="badge badge-info rounded-0">2dc1579106b1a657080cc51c7efca7e5</span>
         </div>
       </div>
       <div class="modal-footer" style="border-top: 0px;">
-        <button type="button" class="btn btn-danger rounded-0" onclick="closePopUp(false)">Cancel</button>
-        <button id="reset-form" type="reset" class="btn btn-warning rounded-0">Reset</button>
-        <button type="submit" class="btn btn-info rounded-0">Send message</button>
+        <button type="button" class="btn btn-outline-secondary rounded-0" onclick="closePopUp(false)">Cancel</button>
+        <!-- <button id="reset-form" type="reset" class="btn btn-outline-secondary rounded-0">Reset</button> -->
+        <button type="submit" class="btn btn-success rounded-0">Send <i class="fas fa-angle-right"></i></button>
       </div>
     </div>
   </form>
@@ -97,3 +116,6 @@
 </body>
 
 </html>
+<!-- 
+<i class="fas fa-phone"></i> 
+                <i class="fas fa-file-alt"></i>  -->

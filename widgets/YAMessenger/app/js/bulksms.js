@@ -2,9 +2,10 @@ var recordId;
 var recordModule;
 var ButtonPosition;
 var smsTemplates;
-var templateId;
-var Mobile;
-
+var records = []
+var currentUser;
+var accountId;
+var crmApiKey;
 function addListItem(menudId, itemLabel, itemValue, itemId) {
     if (itemId != null) {
         cacheItem = '<textarea id="' + itemId + '">' + itemValue + '</textarea>';
@@ -16,8 +17,10 @@ function addListItem(menudId, itemLabel, itemValue, itemId) {
         funcName = "insertField";
     } else if (menudId == "sms-templates") {
         funcName = "insertTemplate";   
-    } else {
+    } else if (menudId == "sms-sender-ids") {
         funcName = "insertSenderId";
+    } else {
+        funcName = "selectPhoneField";
     }
     item = '<a onclick="'+funcName+'(this);" class="dropdown-item ' + menudId + '-item" href="#" data-value="' + itemValue + '">' + itemLabel + '</a>';
     $("#" + menudId).append(item);
@@ -52,8 +55,12 @@ function initializeWidget() {
         }).then(function (data) {
             console.log(JSON.stringify(data));
             toggleLoading();
+            phoneFields = [];
             data.fields.forEach(function (field) {
                 addListItem("record-fields", field.field_label, recordModule + "__" + field.api_name, null);
+                if (field.field_label.toLowerCase().includes('phone') || field.field_label.toLowerCase().includes('mobile')){
+                    addListItem("phone-fields", field.field_label, field.api_name, null);
+                }
             });
         })
 
@@ -100,7 +107,88 @@ function initializeWidget() {
                 }
             })
         }
+
+         // Get org detais
+         ZOHO.CRM.API.getOrgVariable("yamessenger__apiKey").then(function(data){
+            console.log("yamessenger__apiKey:: " + JSON.stringify(data));
+            crmApiKey = data.Success.Content;
+        });
+         // Get org detais
+         ZOHO.CRM.API.getOrgVariable("yamessenger__account_id").then(function(data){
+            console.log("yamessenger__account_id:: " + JSON.stringify(data));
+            accountId = data.Success.Content;
+        });
+
+        ZOHO.CRM.CONFIG.getCurrentUser().then(function(data){
+            console.log("Current User:: " + JSON.stringify(data));
+            currentUser = {'id': data.users[0]['id'], 'name': data.users[0]['email']}
+        });     
+        
+        recordId.forEach(function(itemId){
+            ZOHO.CRM.API.getRecord({Entity:recordModule,RecordID:itemId})
+            .then(function(data){
+                records.push(data.data[0]);
+            });
+         });
     });
 
     ZOHO.embeddedApp.init();
+}
+
+function collateData(){
+    modulename = recordModule;
+    user = {'id': currentUser.id, 'name': 'ankita.sinha0423@gmail.com'};
+    senderId = $('#selected-sender-id').val();
+    accountId = $('#account-id').text();
+    apiKey = $('#apikey').text();;
+    messages = [];
+    records.forEach(function(record){
+        messages.push({
+            'mobilenumber': record[$('#selected-phone-field').text()],
+            'recordId': record['id'],
+            'text': $('#message-text').val()
+        })
+    });
+    return createMessagePayload(modulename, user, senderId, accountId, apiKey, messages)
+}
+
+function createMessagePayload(modulename, user, senderId, accountId, apikey, messages) {
+    var xmlDocument = $.parseXML('<m:Library xmlns:m="http://www.screen-magic.com" xmlns="http://www.defns.com" />');
+    var usernameElem = xmlDocument.createElement('username');
+    var senderidElem = xmlDocument.createElement('senderid');
+    var accountidElem = xmlDocument.createElement('accountid');
+    var apikeyElem = xmlDocument.createElement('apikey');    
+    usernameElem.textContent = user.name;
+    usernameElem.setAttribute('userid', user.id);
+    senderidElem.textContent = senderId;
+    accountidElem.textContent = accountId;
+    apikeyElem.textContent = apikey;
+    xmlDocument.documentElement.appendChild(usernameElem);
+    xmlDocument.documentElement.appendChild(senderidElem);
+    xmlDocument.documentElement.appendChild(accountidElem);
+    xmlDocument.documentElement.appendChild(apikeyElem);
+    messages.forEach(function(sms){
+        var messageElem = xmlDocument.createElement('message');
+        messageElem.textContent = sms.text;
+        messageElem.setAttribute('mobilenumber', sms.mobilenumber);
+        messageElem.setAttribute('modulename', modulename);
+        messageElem.setAttribute('recordId', sms.recordId);
+        xmlDocument.documentElement.appendChild(messageElem);
+    }); 
+    payload = xmlDocument.documentElement.outerHTML  
+    return payload;  
+}
+
+function sendMessage(payload){
+    payload = payload.replace(/xmlns=""/g, "").replace(/"/g, "'");
+    var request = {
+        url : "https://api.sms-magic.com/v1/smsgateway/post",
+        params:{text: payload}
+   }
+   toggleLoading();
+   ZOHO.CRM.HTTP.post(request)
+   .then(function(data){
+       toggleLoading();
+       console.log(data)
+   })
 }

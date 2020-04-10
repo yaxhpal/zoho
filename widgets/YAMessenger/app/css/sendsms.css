@@ -43,3 +43,17 @@ body.loading .modal {
 body {
     max-height: 534px;
 }
+
+
+.primarybtn:focus {
+    background-color: #3c98dd!important;
+    border-bottom: solid 1px #1b70b0!important;
+}
+
+.primarybtn {
+    color: white!important;
+    border-radius: 2px!important;
+    background-color: #42a2eb!important;
+    border: solid 1px #42a2eb!important;
+    box-shadow: none!important;
+}

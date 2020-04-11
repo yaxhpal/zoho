@@ -3,41 +3,40 @@
    with position:fixed. Width, height, top and left speak
    for themselves. Background we set to 80% white with
    our animation centered, and no-repeating */
-   .modal {
-    display:    none;
-    position:   fixed;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('http://i.stack.imgur.com/FhHRx.gif') 
-                50% 50% 
-                no-repeat;
+.modal_spinner {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
 }
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
-body.loading .modal {
-    overflow: hidden;   
+body.loading .modal_spinner {
+    overflow: hidden;
 }
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading .modal {
+body.loading .modal_spinner {
     display: block;
 }
 
-.btn:focus, textarea, .no-focus {
+.btn:focus,
+textarea,
+.no-focus {
     outline: none !important;
-    box-shadow:none !important;
+    box-shadow: none !important;
 }
 
 
-.dropdown-menu{
-    max-height:200px !important;
-    overflow-y:auto;
+.dropdown-menu {
+    max-height: 200px !important;
+    overflow-y: auto;
 }
 
 body {
@@ -46,14 +45,36 @@ body {
 
 
 .primarybtn:focus {
-    background-color: #3c98dd!important;
-    border-bottom: solid 1px #1b70b0!important;
+    background-color: #3c98dd !important;
+    border-bottom: solid 1px #1b70b0 !important;
 }
 
 .primarybtn {
-    color: white!important;
-    border-radius: 2px!important;
-    background-color: #42a2eb!important;
-    border: solid 1px #42a2eb!important;
-    box-shadow: none!important;
+    color: white !important;
+    border-radius: 2px !important;
+    background-color: #42a2eb !important;
+    border: solid 1px #42a2eb !important;
+    box-shadow: none !important;
 }
+
+
+.chat {
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    background: white;
+}
+
+.chat:before {
+    width: 0;
+    height: 0;
+    content: "";
+    top: -5px;
+    left: -14px;
+    position: relative;
+    border-style: solid;
+    border-width: 0 13px 13px 0;
+    border-color: transparent #ffffff transparent transparent;
+}
+

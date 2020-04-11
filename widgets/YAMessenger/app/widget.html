@@ -19,20 +19,19 @@
   <script src="js/bulksms.js"></script>
   <script src="js/smscount.js"></script>
 </head>
-
 <body class="loading">
   <form id="message-form">
     <div class="card border-bottom-0 rounded-0">
       <div class="progress rounded-0" style="height: 5px;">
-        <div class="progress-bar bg-warning rounded-0" id="progress-bar" role="progressbar" style="width: 2%;"
+        <div class="progress-bar bg-warning rounded-0" id="progress-bar" role="progressbar" style="width: 100%;"
           aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
       <div class="card-body">
         <div class="form-group">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split rounded-0" id="sender-ids-drop"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split rounded-0"
+                id="sender-ids-drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Sender Id<span class="invisible">,,,</span>
               </button>
               <div id="sms-sender-ids" class="dropdown-menu rounded-0" aria-labelledby="sender-ids-drop">
@@ -78,8 +77,8 @@
 
         <div class="form-group">
           <div class="btn-group float-right">
-            <button class="btn btn-secondary dropdown-toggle rounded-0" type="button" id="sms-fields" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false" data-boundary="scrollParent">
+            <button class="btn btn-secondary dropdown-toggle rounded-0" type="button" id="sms-fields"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-boundary="scrollParent">
               Insert record's field
             </button>
             <div id="record-fields" class="dropdown-menu rounded-0" aria-labelledby="sms-fields">
@@ -88,25 +87,41 @@
           </div>
         </div>
         <div class="form-group">
-          <textarea class="form-control rounded-0" id="message-text" placeholder="Type you message here" rows="7"
-            required></textarea>
-            <span class="badge badge-light rounded-0"><b id="smsCount"></b> SMS (<b id="smsLength"></b>) Characters left</span>
+          <textarea class="form-control bg-light rounded-0" id="message-text" placeholder="Type you message here"
+            rows="7" required></textarea>
+          <small><b id="smsCount"></b> SMS (<b id="smsLength"></b>) Characters left</small>
         </div>
         <div class="form-group"></div>
         Account Id: <span id="account-id" class="badge badge-info rounded-0">80019040</span>
         API Key: <span id="apikey" class="badge badge-info rounded-0">2dc1579106b1a657080cc51c7efca7e5</span>
-        </div>
       </div>
-      <div class="modal-footer" style="border-top: 0px;">
-        <button type="button" class="btn btn-outline-secondary rounded-0" onclick="closePopUp(false)">Cancel</button>
-        <!-- <button id="reset-form" type="reset" class="btn btn-outline-secondary rounded-0">Reset</button> -->
-        <button type="submit" class="btn btn-success rounded-0">Send <i class="fas fa-angle-right"></i></button>
-      </div>
+    </div>
+    <div class="modal-footer" style="border-top: 0px;">
+      <button type="button" class="btn btn-outline-secondary rounded-0" onclick="closePopUp(false)">Cancel</button>
+      <!-- <button id="reset-form" type="reset" class="btn btn-outline-secondary rounded-0">Reset</button> -->
+      <button id="preview-message" class="btn btn-outline-secondary rounded-0">Preview</button>
+      <button type="submit" class="btn btn-success rounded-0">Send <i class="fas fa-angle-right"></i></button>
+    </div>
     </div>
   </form>
   <div id="value-cache" class="invisible" style="display: none;"></div>
-  <div class="modal"></div>
-
+  <div class="modal_spinner"></div>
+  <div class="modal fade" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="preview-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="padding: .5rem .5rem;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="background: darkslategrey; height: 340px; overflow-y: auto;">
+            <div class="chat">
+                <P id="preview-text" class="text-no-wrap">You text preview will <br>be seen here</p>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
   <script type="text/javascript">
     $(document).ready(function () {
       initializeWidget();

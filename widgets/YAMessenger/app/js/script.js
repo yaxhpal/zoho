@@ -73,9 +73,18 @@ $(document).ready(function () {
     $('#message-form').submit(function( event ) {
         payload = collateData();
         console.log("Record Data" + payload);
-        sendMessage(payload);
+        // sendMessage(payload);
         event.preventDefault();
       });
+
+    $('#preview-message').click(function () {
+        text = $('#message-text').val();
+        text = text.replace(/\n/g, '<br>');
+        $('#preview-text').text("");
+        $('#preview-text').append(text);
+        $('#preview-modal').modal('show');
+        event.preventDefault();
+    });
 });
 
 function insertField(fieldElement) {

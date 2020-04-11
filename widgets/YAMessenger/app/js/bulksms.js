@@ -57,7 +57,7 @@ function initializeWidget() {
             toggleLoading();
             phoneFields = [];
             data.fields.forEach(function (field) {
-                addListItem("record-fields", field.field_label, recordModule + "__" + field.api_name, null);
+                addListItem("record-fields", field.field_label, field.api_name, null);
                 if (field.field_label.toLowerCase().includes('phone') || field.field_label.toLowerCase().includes('mobile')){
                     addListItem("phone-fields", field.field_label, field.api_name, null);
                 }
@@ -146,7 +146,7 @@ function collateData(){
         messages.push({
             'mobilenumber': record[$('#selected-phone-field').text()],
             'recordId': record['id'],
-            'text': $('#message-text').val()
+            'text': applyMergeField($('#message-text').val(), record)
         })
     });
     return createMessagePayload(modulename, user, senderId, accountId, apiKey, messages)
@@ -177,6 +177,14 @@ function createMessagePayload(modulename, user, senderId, accountId, apikey, mes
     }); 
     payload = xmlDocument.documentElement.outerHTML  
     return payload;  
+}
+
+function applyMergeField(text, record) {
+    allmatches = [...text.matchAll(/\$\{([^{.]+)\}/g)];
+    allmatches.forEach(function(fieldmatch){
+        text = text.replace(fieldmatch[0], record[fieldmatch[1]]);
+    })
+    return text;
 }
 
 function sendMessage(payload){

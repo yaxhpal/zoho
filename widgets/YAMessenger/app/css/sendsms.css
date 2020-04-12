@@ -153,6 +153,10 @@ body {
     margin: 1px !important;
 }
 
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #fff !important;
+}
+
 .spinner-grow {
     -webkit-animation: spinner-grow 1.5s linear infinite !important;
     animation: spinner-grow 1.5s linear infinite !important;

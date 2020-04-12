@@ -200,9 +200,13 @@ function createMessagePayload(modulename, user, senderId, accountId, apikey, mes
 }
 
 function applyMergeField(text, record) {
-    allmatches = [...text.matchAll(/\$\{([^{.]+)\}/g)];
+    allmatches = [...text.matchAll(/\$\{([^{]+)\}/g)];
     allmatches.forEach(function (fieldmatch) {
-        text = text.replace(fieldmatch[0], record[fieldmatch[1]] || "");
+        fieldValue = record[fieldmatch[1]] || "";
+        if (fieldmatch[0].includes('Time')) {
+            fieldValue = $.format.date(fieldValue, 'MM/dd/yyyy hh:mm:ss a');
+        } 
+        text = text.replace(fieldmatch[0], fieldValue);
     })
     return text;
 }

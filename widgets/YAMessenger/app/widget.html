@@ -103,38 +103,5 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      initializeWidget();
-      $('#message-text').smsArea();
-      $('#sms-sender-ids').select2({
-        placeholder: "Select a sender id"
-      });
-      $('#sms-templates').select2({
-        placeholder: "Select a text template"
-      });
-      $('#phone-fields').select2({
-        placeholder: "Select phone field"
-      });
-      $('#record-fields').select2({
-        placeholder: "Select merge field",
-        allowClear: true
-      }).on('select2:unselecting', function () {
-        $(this).data('unselecting', true);
-      }).on('select2:opening', function (e) {
-        if ($(this).data('unselecting')) {
-          $(this).removeData('unselecting');
-          e.preventDefault();
-        }
-      });
-      $('b[role="presentation"]').hide();
-      $('.select2-selection__arrow').append(
-        '<span style="color: gray;font-size: 12px;"><i class="fa fa-angle-down"></i></span>');
-    })
-  </script>
 </body>
-
 </html>
-<!-- 
-<i class="fas fa-phone"></i> 
-                <i class="fas fa-file-alt"></i>  -->

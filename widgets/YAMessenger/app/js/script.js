@@ -74,6 +74,10 @@ $(document).ready(function () {
         var data = e.params.data;
         $('#message-text').insertAtCaret("${" + data.id + "}");
         console.log(data);
+    }).on('select2:unselect', function (e) {
+        var data = e.params.data;
+        $('#message-text').val($('#message-text').val().replace("${" + data.id + "}", "")); 
+        console.log(data);
     });
 
     $('b[role="presentation"]').hide();

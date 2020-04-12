@@ -33,7 +33,7 @@
         <div class="form-row">
           <label class="col-6 ya-color" for="sms-sender-ids">
             Sender Id:<br>
-            <select style="width: 100%" class="rounded-0" id="sms-sender-ids" name="Sender Ids">
+            <select style="width: 100%" class="rounded-0" id="sms-sender-ids" name="Sender Ids" required>
               <option></option>
             </select>
           </label>
@@ -48,7 +48,7 @@
         <div class="form-row">
           <label class="col-6 ya-color" for="phone-fields">
             Phone Field:<br>
-            <select style="width: 100%" class="rounded-0" id="phone-fields" name="Phone Field">
+            <select style="width: 100%" class="rounded-0" id="phone-fields" name="Phone Field" required>
               <option></option>
             </select>
           </label>
@@ -69,17 +69,30 @@
             <small><b id="smsCount"></b> SMS (<b id="smsLength"></b>)</small>
           </div>
         </div>
-
-        <div class="form-group invisible">
+        <br>
+        <div class="form-group" style="display: none;">
           Account Id: <span id="account-id" class="badge badge-info rounded-0">80019040</span>
           API Key: <span id="apikey" class="badge badge-info rounded-0">2dc1579106b1a657080cc51c7efca7e5</span>
         </div>
-      </div>
-      <div class="modal-footer" style="border-top: 0px;">
-        <button type="button" class="btn btn-outline-secondary rounded-0" onclick="closePopUp(false)">Cancel</button>
-        <!-- <button id="reset-form" type="reset" class="btn btn-outline-secondary rounded-0">Reset</button> -->
-        <button id="preview-message" class="btn btn-outline-secondary rounded-0">Preview</button>
-        <button type="submit" class="btn btn-success rounded-0">Send <i class="fas fa-angle-right"></i></button>
+        <div class="form-row">
+            <div class="col-7"> </div>
+            <div class="col-5"> 
+              <button type="button" class="btn btn-outline-secondary rounded-0" onclick="closePopUp(false)">Cancel</button>
+              <button id="preview-message" class="btn btn-outline-secondary rounded-0">Preview</button>
+              <button type="submit" class="btn btn-success rounded-0">Send <i class="fas fa-angle-right"></i></button>
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="col-12">
+              <div id="form-error-alert" class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+                  <span id="form-error-message"></span>
+                  <button type="button" class="close-alert close" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </form>

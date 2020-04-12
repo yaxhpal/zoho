@@ -130,8 +130,32 @@ function initializeWidget() {
             requestTimeout += 800;
         });
     });
-
     ZOHO.embeddedApp.init();
+}
+
+function validateSMS() {
+    senderId = $('#sms-sender-ids').select2('data');
+    phoneField = $('#phone-fields').select2('data');
+    text = $('#message-text').val();
+    debugger
+    if (senderId == undefined || senderId[0].id == "") {
+        $('#form-error-message').text("Please select valid sender id.");
+        $('#form-error-alert').show();
+        return false;
+    }
+
+    if (phoneField == undefined || phoneField[0].id == "") {
+        $('#form-error-message').text("Please select valid phone field.");
+        $('#form-error-alert').show();
+        return false;
+    }
+
+    if (text == undefined || text == "") {
+        $('#form-error-message').text("Message can not be empty.");
+        $('#form-error-alert').show();
+        return false;
+    }
+    return true;
 }
 
 function getModuleRecord(moduleName, itemId, timeout) {
@@ -158,13 +182,13 @@ function collateData() {
         'id': currentUser.id,
         'name': 'ankita.sinha0423@gmail.com'
     };
-    senderId = $('#selected-sender-id').val();
+    senderId = $('#sms-sender-ids').select2('data')[0].id;
     accountId = $('#account-id').text();
     apiKey = $('#apikey').text();;
     messages = [];
     records.forEach(function (record) {
         messages.push({
-            'mobilenumber': record[$('#selected-phone-field').text()],
+            'mobilenumber': record[$('#phone-fields').select2('data')[0].id],
             'recordId': record['id'],
             'text': applyMergeField($('#message-text').val(), record)
         })
@@ -205,24 +229,27 @@ function applyMergeField(text, record) {
         fieldValue = record[fieldmatch[1]] || "";
         if (fieldmatch[0].includes('Time')) {
             fieldValue = $.format.date(fieldValue, 'MM/dd/yyyy hh:mm:ss a');
-        } 
+        }
         text = text.replace(fieldmatch[0], fieldValue);
     })
     return text;
 }
 
 function sendMessage(payload) {
-    payload = payload.replace(/xmlns=""/g, "").replace(/"/g, "'");
-    var request = {
-        url: "https://api.sms-magic.com/v1/smsgateway/post",
-        params: {
-            text: payload
+    if (validateSMS()) {
+        payload = payload.replace(/xmlns=""/g, "").replace(/"/g, "'");
+        var request = {
+            url: "https://api.sms-magic.com/v1/smsgateway/post",
+            params: {
+                text: payload
+            }
         }
+        console.log("Request: " + JSON.stringify(request));
+        // toggleLoading();
+        // ZOHO.CRM.HTTP.post(request)
+        //     .then(function (data) {
+        //         toggleLoading();
+        //         console.log(data)
+        // });
     }
-    toggleLoading();
-    ZOHO.CRM.HTTP.post(request)
-        .then(function (data) {
-            toggleLoading();
-            console.log(data)
-        })
 }

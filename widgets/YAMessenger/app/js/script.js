@@ -27,6 +27,13 @@ jQuery.fn.extend({
 
 $(document).ready(function () {
     initializeWidget();
+    
+    $('#form-error-alert').hide();
+
+    $('.close-alert').click(function() {
+        $('#form-error-alert').hide()
+     })
+
     $('#message-text').smsArea();
 
     $('#sms-sender-ids').select2({
@@ -79,12 +86,17 @@ $(document).ready(function () {
     $('#message-form').submit(function (event) {
         payload = collateData();
         console.log("Record Data" + payload);
-        // sendMessage(payload);
+        sendMessage(payload);
         event.preventDefault();
     });
 
     $('#preview-message').click(function () {
         text = $('#message-text').val();
+        if (text == undefined || text == "") {
+            $('#form-error-message').text("Message can not be empty.");
+            $('#form-error-alert').show();
+            return false;
+        }
         text = applyMergeField(text, records[0]);
         text = text.replace(/\n/g, '<br>');
         $('#preview-text').text("");

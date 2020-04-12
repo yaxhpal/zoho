@@ -168,3 +168,83 @@
 //             });
 //     }
 // }
+
+
+
+
+
+
+function collateData() {
+    modulename = recordModule;
+    user = {
+        'id': currentUser.id,
+        'name': 'ankita.sinha0423@gmail.com'
+    };
+    senderId = $('#sms-sender-ids').select2('data')[0].id;
+    accountId = $('#account-id').text();
+    apiKey = $('#apikey').text();;
+    messages = [];
+    records.forEach(function (record) {
+        messages.push({
+            'mobilenumber': record[$('#phone-fields').select2('data')[0].id],
+            'recordId': record['id'],
+            'text': applyMergeField($('#message-text').val(), record)
+        })
+    });
+    return createMessagePayload(modulename, user, senderId, accountId, apiKey, messages)
+}
+
+function createMessagePayload(modulename, user, senderId, accountId, apikey, messages) {
+    var xmlDocument = $.parseXML('<m:Library xmlns:m="http://www.screen-magic.com" xmlns="http://www.defns.com" />');
+    var usernameElem = xmlDocument.createElement('username');
+    var senderidElem = xmlDocument.createElement('senderid');
+    var accountidElem = xmlDocument.createElement('accountid');
+    var apikeyElem = xmlDocument.createElement('apikey');
+    usernameElem.textContent = user.name;
+    usernameElem.setAttribute('userid', user.id);
+    senderidElem.textContent = senderId;
+    accountidElem.textContent = accountId;
+    apikeyElem.textContent = apikey;
+    xmlDocument.documentElement.appendChild(usernameElem);
+    xmlDocument.documentElement.appendChild(senderidElem);
+    xmlDocument.documentElement.appendChild(accountidElem);
+    xmlDocument.documentElement.appendChild(apikeyElem);
+    messages.forEach(function (sms) {
+        var messageElem = xmlDocument.createElement('message');
+        messageElem.textContent = sms.text;
+        messageElem.setAttribute('mobilenumber', sms.mobilenumber);
+        messageElem.setAttribute('modulename', modulename);
+        messageElem.setAttribute('recordId', sms.recordId);
+        xmlDocument.documentElement.appendChild(messageElem);
+    });
+    payload = xmlDocument.documentElement.outerHTML
+    return payload;
+}
+
+function sendMessage(payload) {
+    if (validateSMS()) {
+        payload = payload.replace(/xmlns=""/g, "").replace(/"/g, "'");
+        var request = {
+            url: "https://api.sms-magic.com/v1/smsgateway/post",
+            params: {
+                text: payload
+            }
+        }
+        console.log("Request: " + JSON.stringify(request));
+        // toggleLoading();
+        // ZOHO.CRM.HTTP.post(request)
+        //     .then(function (data) {
+        //         toggleLoading();
+        //         console.log(data)
+        // });
+
+    }
+}
+
+function closePopUp(toReload) {
+    if (toReload) {
+        return ZOHO.CRM.UI.Popup.closeReload();
+    } else {
+        return ZOHO.CRM.UI.Popup.close();
+    }
+}

@@ -1,47 +1,20 @@
-jQuery.fn.extend({
-    insertAtCaret: function (myValue) {
-        return this.each(function (i) {
-            if (document.selection) {
-                //For browsers like Internet Explorer
-                this.focus();
-                var sel = document.selection.createRange();
-                sel.text = myValue;
-                this.focus();
-            } else if (this.selectionStart || this.selectionStart == '0') {
-                //For browsers like Firefox and Webkit based
-                var startPos = this.selectionStart;
-                var endPos = this.selectionEnd;
-                var scrollTop = this.scrollTop;
-                this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-                this.focus();
-                this.selectionStart = startPos + myValue.length;
-                this.selectionEnd = startPos + myValue.length;
-                this.scrollTop = scrollTop;
-            } else {
-                this.value += myValue;
-                this.focus();
-            }
-        });
-    }
-});
-
 $(document).ready(function () {
-    initializeWidget();
     
     $('#form-error-alert').hide();
 
-    $('.close-alert').click(function() {
+    $('.close-alert').click(function () {
         $('#form-error-alert').hide()
-     })
+    })
 
     $('#message-text').smsArea();
 
     $('#sms-sender-ids').select2({
         placeholder: "Select a sender id"
-    }).on('select2:select', function (e) {
-        var data = e.params.data;
-        console.log(data);
-    });
+    })
+
+    $('#phone-fields').select2({
+        placeholder: "Select phone field"
+    })
 
     $('#sms-templates').select2({
         placeholder: "Select a text template"
@@ -50,13 +23,6 @@ $(document).ready(function () {
         templateText = $('#' + data.id).val();
         $('#message-text').val("");
         $('#message-text').insertAtCaret(templateText)
-        console.log(data);
-    });
-
-    $('#phone-fields').select2({
-        placeholder: "Select phone field"
-    }).on('select2:select', function (e) {
-        var data = e.params.data;
         console.log(data);
     });
 
@@ -76,27 +42,19 @@ $(document).ready(function () {
         console.log(data);
     }).on('select2:unselect', function (e) {
         var data = e.params.data;
-        $('#message-text').val($('#message-text').val().replace("${" + data.id + "}", "")); 
+        $('#message-text').val($('#message-text').val().replace("${" + data.id + "}", ""));
         console.log(data);
     });
-
-    $('b[role="presentation"]').hide();
-    $('.select2-selection__arrow').append('<span style="color: gray;font-size: 12px;"><i class="fa fa-angle-down"></i></span>');
-
-    $('#reset-form').click(function () {
-        $('#progress-bar').width('2%');
-    });
-
+  
     $('#message-form').submit(function (event) {
-        payload = collateData();
-        console.log("Record Data" + payload);
-        sendMessage(payload);
+        payload = collateDataV2();
+        sendMessageV2(payload);
         event.preventDefault();
     });
 
     $('#preview-message').click(function () {
         text = $('#message-text').val();
-        if (text == undefined || text == "") {
+        if (text == undefined || text.replace(/\n/g, '').replace(/\t/g, '').replace(/ /g, '') == "") {
             $('#form-error-message').text("Message can not be empty.");
             $('#form-error-alert').show();
             return false;

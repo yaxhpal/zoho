@@ -3,8 +3,7 @@
 (function($){
     $.fn.smsArea = function(options){
 
-    var
-    e = this,
+    var e = this,
     cutStrLength = 0,
 
     s = $.extend({
@@ -49,6 +48,7 @@
                     case "}":
                     case "|":
                     case "€":
+                    case "£":
                         smsLength += 2;
                     break;
 
@@ -86,4 +86,5 @@
 
         }, s.interval)
     }).keyup()
+
 }}(jQuery));

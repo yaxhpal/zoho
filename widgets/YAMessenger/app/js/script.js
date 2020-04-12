@@ -26,88 +26,55 @@ jQuery.fn.extend({
 });
 
 $(document).ready(function () {
-    $.fn.updateProgress = function() {
-        ssid = $.trim($('#selected-sender-id').val()).length;
-        txtval = $.trim($('#message-text').val()).length;
-        console.log("XXX: " + ssid);
-        console.log("YYY: " + txtval);
-        if(ssid && txtval) {
-            $('#progress-bar').width('100%');  
-        } else if (ssid) {
-            $('#progress-bar').width('50%');
-        } else if (txtval) {
-            $('#progress-bar').width('50%');
-        } else {
-            $('#progress-bar').width('2%');
-        }
-    }; 
-
-    $('.sender-ids-item').click(function () {
-        senderId = $(this).text();
-        $('#selected-sender-id').val(senderId);
-        $.fn.updateProgress()
-    });
-
-    $('.sms-templates-item').click(function () {
-        templateName = $(this).text();
-        $('#selected-template').val(templateName)
-        $.fn.updateProgress()
-        templateText = $('#' + $(this).data("value")).val()
-        $('#message-text').val(templateText);
-    });
-
-    $('.record-fields-item').click(function () {
-        recordField = "${" + $(this).text() + "}";
-        $('#message-text').insertAtCaret(recordField);
-        $.fn.updateProgress()
-    });
-
-    $('#message-text').blur(function() {
-        $.fn.updateProgress()
-    });
-
-    $('#reset-form').click(function() {
+    $('#reset-form').click(function () {
         $('#progress-bar').width('2%');
     });
 
-    $('#message-form').submit(function( event ) {
+    $('#message-form').submit(function (event) {
         payload = collateData();
         console.log("Record Data" + payload);
         // sendMessage(payload);
         event.preventDefault();
-      });
+    });
 
     $('#preview-message').click(function () {
         text = $('#message-text').val();
+        text = applyMergeField(text, records[0]);
         text = text.replace(/\n/g, '<br>');
         $('#preview-text').text("");
         $('#preview-text').append(text);
         $('#preview-modal').modal('show');
         event.preventDefault();
     });
+
+    $('#sms-sender-ids').on('select2:select', function (e) {
+        var data = e.params.data;
+        console.log(data);
+    });
+
+    $('#sms-templates').on('select2:select', function (e) {
+        var data = e.params.data;
+        templateText = $('#' + data.id).val();
+        $('#message-text').val(templateText);
+        console.log(data);
+    });
+
+    $('#phone-fields').on('select2:select', function (e) {
+        var data = e.params.data;
+        console.log(data);
+    });
+
+    $('#record-fields').on('select2:select', function (e) {
+        var data = e.params.data;
+        $('#message-text').insertAtCaret("${" + data.id + "}");
+        console.log(data);
+    });
+
+    $("#message-text" ).focusin(function() {
+        $('#text-active').removeClass('invisible')
+    });
+
+    $("#message-text" ).focusout(function() {
+        $('#text-active').addClass('invisible')
+    });
 });
-
-function insertField(fieldElement) {
-    recordField = "${" + $(fieldElement).data("value") + "}";
-    $('#message-text').insertAtCaret(recordField);
-}
-
-function insertTemplate(templateElement) {
-    templateName = $(templateElement).text();
-    $('#selected-template').val(templateName);
-    templateId = $(templateElement).data("value");
-    templateText = $('#'+templateId).val();
-    $('#message-text').val(templateText);
-}
-
-function insertSenderId(senderIdElement) {
-    senderId = $(senderIdElement).data("value");
-    $('#selected-sender-id').val(senderId);
-}
-
-function selectPhoneField(phoneFieldElement) {
-    phoneField = $(phoneFieldElement).text();
-    $('#selected-phone-field').val(phoneField);
-    $('#selected-phone-field').text($(phoneFieldElement).data("value"));
-    
-}

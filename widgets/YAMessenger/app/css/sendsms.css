@@ -33,7 +33,9 @@ textarea,
     box-shadow: none !important;
 }
 
-
+.file-bg {
+    background-color: #f5fdf2;;
+}
 .dropdown-menu {
     max-height: 200px !important;
     overflow-y: auto;

@@ -1,5 +1,12 @@
 $(document).ready(function () {
-    
+    // http://www.jasny.net/bootstrap/components/#fileinput
+    $('.fileinput').fileinput({'maxSize': 5
+    }).on('change.bs.fileinput', function(e) {
+        $('.fileinput-content').addClass('file-bg');
+    }).on('clear.bs.fileinput', function(e) {
+        $('.fileinput-content').removeClass('file-bg')
+    });
+
     $('#form-error-alert').hide();
 
     $('.close-alert').click(function () {
@@ -73,5 +80,5 @@ $(document).ready(function () {
 
     $("#message-text").focusout(function () {
         $('#text-active').addClass('invisible')
-    });
+    }); 
 });

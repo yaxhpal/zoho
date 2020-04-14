@@ -4,7 +4,7 @@ var ButtonPosition;
 var smsTemplates;
 var records = []
 var currentUser;
-var accountId;
+var crmAccountId;
 var crmApiKey;
 var requestTimeout;
 
@@ -90,12 +90,14 @@ $(document).ready(function () {
         ZOHO.CRM.API.getOrgVariable("yamessenger__apiKey").then(function (data) {
             console.log("yamessenger__apiKey:: " + JSON.stringify(data));
             crmApiKey = data.Success.Content;
+            $('#apikey').text(crmApiKey)
         });
 
         // Get Account ID for YAMessenger
         ZOHO.CRM.API.getOrgVariable("yamessenger__account_id").then(function (data) {
             console.log("yamessenger__account_id:: " + JSON.stringify(data));
-            accountId = data.Success.Content;
+            crmAccountId = data.Success.Content;
+            $('#account-id').text(crmAccountId)
         });
 
         // Get current Zoho CRM user information
@@ -116,6 +118,29 @@ $(document).ready(function () {
     });
     ZOHO.embeddedApp.init();
 });
+
+function saveOrgVar(accountId, apiKey) {
+    paramMap = {"apiname": "yamessenger__account_id", "value": accountId};
+    ZOHO.CRM.CONNECTOR.invokeAPI("crm.set", paramMap)
+    .then(function (data) {
+        console.log(JSON.stringify(data));
+        paramMap = {"apiname": "yamessenger__apiKey", "value": apiKey};
+        ZOHO.CRM.CONNECTOR.invokeAPI("crm.set", paramMap)
+        .then(function (data) {
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+function clickOnSaveOrgVar() {
+    var modal = $('#org-var-modal-src')
+    accountId = modal.find('.modal-body #account-id-input').val();
+    apiKey = modal.find('.modal-body #api-key-input').val();
+    $('#account-id').text(accountId);
+    $('#apikey').text(apiKey);
+    saveOrgVar(accountId, apiKey);
+    modal.modal('hide');
+  }
 
 function validateSMS() {
     senderId = $('#sms-sender-ids').select2('data');
@@ -194,22 +219,41 @@ function collateDataV2() {
 
 function createJsonPayload(modulename, user, senderId, accountId, apikey, messages) {
     payload = {
-        "account": {"id": accountId, "senderId": senderId, "apiKey":  apikey, "source": 3005},
+        "account": {
+            "id": accountId,
+            "senderId": senderId,
+            "apiKey": apikey,
+            "source": 3005
+        },
         "messages": [],
-        "zoho": {"module": modulename, "recordCount": messages.length, "user": { "email": user.name, "id": user.id}}
-      };
-      messages.forEach(function (sms) {
-            message = { "mobileNumber": sms.mobilenumber, "text": sms.text, "recordId": sms.recordId};
-            payload['messages'].push(message);
-      });
-      return payload
+        "zoho": {
+            "module": modulename,
+            "recordCount": messages.length,
+            "user": {
+                "email": user.name,
+                "id": user.id
+            }
+        }
+    };
+    messages.forEach(function (sms) {
+        message = {
+            "mobileNumber": sms.mobilenumber,
+            "text": sms.text,
+            "recordId": sms.recordId
+        };
+        payload['messages'].push(message);
+    });
+    return payload
 }
 
 function sendMessageV2(payload) {
     if (validateSMS()) {
         var request = {
             url: "https://ptsv2.com/t/qk035-1580415095/post",
-            headers:{"Content-Type": "application/json", 'Accept-Encoding': 'gzip, deflate, br'},
+            headers: {
+                "Content-Type": "application/json",
+                'Accept-Encoding': 'gzip, deflate, br'
+            },
             body: payload
         }
         // console.log("Request: " + JSON.stringify(request));
@@ -218,7 +262,7 @@ function sendMessageV2(payload) {
             .then(function (data) {
                 toggleLoading();
                 console.log(data)
-        });
+            });
     } else {
         console.log('ERROR: Can not send message as input params are invalid.')
     }

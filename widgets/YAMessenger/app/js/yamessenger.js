@@ -70,7 +70,7 @@ $(document).ready(function () {
         text = text.replace(/\n/g, '<br>');
         $('#preview-text').text("");
         $('#preview-text').append(text);
-        $('#preview-modal').modal('show');
+        $('#preview-modal-src').modal('show');
         event.preventDefault();
     });
 
@@ -80,5 +80,12 @@ $(document).ready(function () {
 
     $("#message-text").focusout(function () {
         $('#text-active').addClass('invisible')
-    }); 
+    });
+    
+    $('#settings').click(function () {
+        var modal = $('#org-var-modal-src')
+        modal.find('.modal-body #account-id-input').val($('#account-id').text());
+        modal.find('.modal-body #api-key-input').val($('#apikey').text());
+        modal.modal('show');
+    });
 });

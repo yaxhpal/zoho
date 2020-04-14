@@ -163,3 +163,13 @@ body {
     -webkit-animation: spinner-grow 1.5s linear infinite !important;
     animation: spinner-grow 1.5s linear infinite !important;
 }
+
+.fa-sliders-h {
+    padding: 4px 24px 0px 0px;
+    color: #666;
+    cursor: pointer;
+}
+
+.fa-sliders-h:hover {
+    color: #28a745;
+}

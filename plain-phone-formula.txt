@@ -1,1 +1,1 @@
-Replace(Replace(Replace(Replace(${Leads.Phone}, '(', ''), ')', ''), '-', ''),' ', '') 
+Replace(Replace(Replace(Replace(Replace(${Leads.Phone}, '(', ''), ')', ''), '-', ''),' ', ''), '+', '')

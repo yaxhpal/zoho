@@ -48,7 +48,7 @@ var options = {
   cert: fs.readFileSync('./cert.pem')
 };
 
-http.createServer(options, expressApp).listen(port, function () {
+https.createServer(options, expressApp).listen(port, function () {
   console.log(chalk.green('Zet running at ht' + 'tps://127.0.0.1:' + port));
   console.log(chalk.bold.cyan("Note: Please enable the host (https://127.0.0.1:"+port+") in a new tab and authorize the connection by clicking Advanced->Proceed to 127.0.0.1 (unsafe)."));
 }).on('error', function (err) {

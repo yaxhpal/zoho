@@ -164,12 +164,17 @@ body {
     animation: spinner-grow 1.5s linear infinite !important;
 }
 
-.fa-sliders-h {
+#settings {
     padding: 4px 24px 0px 0px;
     color: #666;
     cursor: pointer;
 }
 
-.fa-sliders-h:hover {
+#settings:hover {
     color: #28a745;
+}
+
+.btn {
+    display: inline-flex;
+    vertical-align: middle;
 }

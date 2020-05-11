@@ -15,19 +15,26 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label ya-color">Account Id:</label>
-                            <input type="text" class="form-control rounded-0" id="account-id-input">
+                        <label for="account-id-input" class="col-form-label ya-color">Account Id:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">person</i></div>
+                            </div>
+                            <input type="text" class="form-control" id="account-id-input">
                         </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label ya-color">API Key</label>
-                            <input type="text" class="form-control rounded-0" id="api-key-input">
+                        <br>
+                        <label for="api-key-input" class="col-form-label ya-color">API Key:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                            </div>
+                            <input type="text" class="form-control" id="api-key-input">
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer border-top-0 ">
                     <button type="button" class="btn btn-outline-secondary rounded-0" data-dismiss="modal">Close</button>
-                    <button id="save-org-var" type="button" class="btn btn-success rounded-0">Save <i class="fas fa-angle-right"></i></button>
+                    <button id="save-org-var" type="button" class="btn btn-success rounded-0">Save <i class="material-icons">chevron_right</i></button>
                 </div>
             </div>
         </div>

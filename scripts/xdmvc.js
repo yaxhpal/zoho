@@ -2,12 +2,7 @@
 MODULE_TO_BE_UPDATED = "smsmagic4__SMS_History";
 LEAD_LOOKUP_FIELD = "smsmagic4__Lead";
 CONTACT_LOOKUP_FIELD = "smsmagic4__Contact";
-// Get SMS History record ID
-target_record_id = sms_history.get("smsmagic4.SMS_History.ID");
-if(target_record_id == null)
-{
-	target_record_id = sms_history.get("smsmagic4__SMS_History.ID");
-}
+target_record_id = sms_history.get("smsmagic4__SMS_History.ID");
 sms_history_record = zoho.crm.getRecordById("smsmagic4__SMS_History",target_record_id);
 if(sms_history_record != null)
 {
@@ -50,7 +45,7 @@ if(sms_history_record != null)
 					{
 						response = zoho.crm.searchRecords("Leads",mobile_criteria_str);
 						info response;
-						if(response.isEmpty() || response.get('status') == 'error')
+						if(response.isEmpty())
 						{
 							response = zoho.crm.searchRecords("Leads",plain_phone_criteria_str);
 							info response;

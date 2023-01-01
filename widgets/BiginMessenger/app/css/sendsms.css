@@ -1,0 +1,180 @@
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal_spinner {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal_spinner {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal_spinner {
+    display: block;
+}
+
+.btn:focus,
+textarea,
+.no-focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.file-bg {
+    background-color: #f5fdf2;;
+}
+.dropdown-menu {
+    max-height: 200px !important;
+    overflow-y: auto;
+}
+
+body {
+    max-height: 534px;
+    font-family: "ProximaNovaRegular", sans-serif;
+    color: #111;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 0;
+    text-rendering: optimizeLegibility;
+}
+
+.primarybtn:focus {
+    background-color: #3c98dd !important;
+    border-bottom: solid 1px #1b70b0 !important;
+}
+
+.primarybtn {
+    color: white !important;
+    border-radius: 2px !important;
+    background-color: #42a2eb !important;
+    border: solid 1px #42a2eb !important;
+    box-shadow: none !important;
+}
+
+.ya-color {
+    color: #666!important;
+}
+.chat {
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    background: white;
+}
+
+.chat:before {
+    width: 0;
+    height: 0;
+    content: "";
+    top: -5px;
+    left: -14px;
+    position: relative;
+    border-style: solid;
+    border-width: 0 13px 13px 0;
+    border-color: transparent #ffffff transparent transparent;
+}
+
+.select2-container--default  {
+    color: #303030!important;
+    font-size: .929rem!important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-family: "ProximaNovaRegular", "Open Sans", sans-serif !important;
+}
+
+.select2-container--default .select2-selection--single {
+    background: white;
+    border:1px solid #ced4da !important;
+    border-radius: 2px;
+    height: 34px;
+    padding-right: 10px;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background: white;
+    border:1px solid #ced4da !important;
+    border-radius: 2px;
+    min-height: 34px;
+    padding-right: 10px;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 34px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    width: 18px;
+    line-height: 34px;
+}
+
+.select2-search--dropdown {
+    color: #303030!important;
+    font-family: "ProximaNovaRegular", "Open Sans", sans-serif !important;
+    height: 34px;
+    padding: 0px !important;
+    border: 0px !important;
+    border-bottom: 1px solid #03A9F4 !important;
+    margin: 0px 1px 0px 1px;
+}
+.select2-search__field {
+    color: #303030!important;
+    font-family: "ProximaNovaRegular", "Open Sans", sans-serif !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border: 0px !important;
+    background: #fff url(../images/select2.png) no-repeat 100% -22px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+    color: #303030!important;
+    background-color: #f5f5f5 !important;
+}
+
+.select2-dropdown {
+    z-index: 9001 !important;
+}
+
+.select2-results__options {
+    margin: 1px !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #fff !important;
+}
+
+.spinner-grow {
+    -webkit-animation: spinner-grow 1.5s linear infinite !important;
+    animation: spinner-grow 1.5s linear infinite !important;
+}
+
+#settings {
+    padding: 4px 24px 0px 0px;
+    color: #666;
+    cursor: pointer;
+}
+
+#settings:hover {
+    color: #28a745;
+}
+
+.btn {
+    display: inline-flex;
+    vertical-align: middle;
+}

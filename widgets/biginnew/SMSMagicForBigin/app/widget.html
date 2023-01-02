@@ -13,15 +13,39 @@
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
     crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
   <script src="js/lib/ZohoEmbededAppSDK.min.js"></script>
   <script src="js/custom.js"></script>
 </head>
 
 <body>
-  <div id="recordInfo"></div>
-  <div id="userInfo"></div>
-  <div id="orgInfo"></div>
+  <div class="container mt-5">
+    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Record Info (If any)</h5>
+        <p id="recordInfo" class="card-text">Records</p>
+
+      </div>
+    </div>
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">User Info (If any)</h5>
+        <p id="userInfo" class="card-text">Users</p>
+      </div>
+    </div>
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Organization Info</h5>
+        <p id="orgInfo" class="card-text">Organizations</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    console.log('Initializing Zoho Embedded App');
+  </script>
 </body>
 
 </html>

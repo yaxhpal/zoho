@@ -5,7 +5,7 @@ $(document).ready(function () {
    * initializing the widget
    */
   ZOHO.embeddedApp.on("PageLoad", function (data) {
-    console.log("PageLoad is complete");
+    console.log("PageLoad is complete" + JSON.stringify(data, null, 2));
     /*
      * Verify if EntityInformation is Passed
      */
@@ -14,12 +14,13 @@ $(document).ready(function () {
        * Fetch Information of Record passed in PageLoad
        * and insert the response into the dom
        */
-      ZOHO.CRM.API.getRecord({
+      console.log("Fetching data: " + JSON.stringify(ZOHO, null, 2));
+      ZOHO.BIGIN.API.getRecord({
         Entity: data.Entity,
         RecordID: data.EntityId,
       }).then(function (response) {
-        console.log("ZOHO.CRM.API.getRecord: " + response);
-        $("#recordInfo").innerHTML = JSON.stringify(response, null, 2);
+        console.log("ZOHO.BIGIN.API.getRecord: " + JSON.stringify(response, null, 2));
+        $("#recordInfo").html(JSON.stringify(response));
       });
     }
 
@@ -27,34 +28,34 @@ $(document).ready(function () {
     * Fetch Current User Information from CRM
     * and insert the response into the dom
     */
-    ZOHO.CRM.CONFIG.getCurrentUser().then(function (response) {
-      console.log("ZOHO.CRM.CONFIG.getCurrentUser: " + response);
-      $("#userInfo").innerHTML = JSON.stringify(response, null, 2);
+    ZOHO.BIGIN.CONFIG.getCurrentUser().then(function (response) {
+      console.log("ZOHO.BIGIN.CONFIG.getCurrentUser: " + JSON.stringify(response, null, 2));
+      $("#userInfo").html(JSON.stringify(response));
     });
 
     /*
      * Fetch Current User Information from CRM
      * and insert the response into the dom
      */
-    ZOHO.CRM.CONFIG.getCurrentUser().then(function (response) {
-      console.log("ZOHO.CRM.CONFIG.getCurrentUser: " + response);
-      $("#userInfo").innerHTML = JSON.stringify(response, null, 2);
+    ZOHO.BIGIN.CONFIG.getCurrentUser().then(function (response) {
+      console.log("ZOHO.BIGIN.CONFIG.getCurrentUser: " + JSON.stringify(response, null, 2));
+      $("#userInfo").html(JSON.stringify(response));
     });
 
-    ZOHO.CRM.CONFIG.getOrgInfo().then(function (response) {
-      console.log("ZOHO.CRM.CONFIG.getOrgInfo: " + response);
-      $("#orgInfo").innerHTML = JSON.stringify(response, null, 2);
+    ZOHO.BIGIN.CONFIG.getOrgInfo().then(function (response) {
+      console.log("ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2));
+      $("#orgInfo").html(JSON.stringify(response));
     });
 
-    // var data_keys = { apiKeys: ["smsmagic4bigin__SMS_Magic_Data_Center_URL"] };
-    // ZOHO.CRM.API.getOrgVariable(data_keys).then(function (data) {
-    //   console.log("ZOHO.CRM.API.getOrgVariable: " + date);
-    //   try {
-    //     console.log("smsmagic4bigin__SMS_Magic_Data_Center_URL:: " + JSON.stringify(data));
-    //   } catch (err) {
-    //     console.log('getOrgVariable error: ' + err);
-    //   }
-    // });
+    var data_keys = { apiKeys: ["smsmagiccompose__Base_URL"] };
+    ZOHO.BIGIN.API.getOrgVariable(data_keys).then(function (data) {
+      console.log("ZOHO.BIGIN.API.getOrgVariable: " + JSON.stringify(data, null, 2));
+      try {
+        console.log("smsmagiccompose__Base_URL:: " + JSON.stringify(data));
+      } catch (err) {
+        console.log('getOrgVariable error: ' + err);
+      }
+    });
   });
   ZOHO.embeddedApp.init();
 });

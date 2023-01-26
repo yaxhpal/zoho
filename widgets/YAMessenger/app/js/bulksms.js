@@ -19,14 +19,15 @@ $(document).ready(function () {
         ZOHO.CRM.META.getFields({
             Entity: recordModule
         }).then(function (data) {
-            // console.log(JSON.stringify(data));
+            // console.log("Fields===>" + JSON.stringify(data));
             phoneFields = [];
             $('#record-fields').val(null).trigger('change');
             $('#phone-fields').val(null).trigger('change');
             data.fields.forEach(function (field) {
                 newOption = new Option(field.field_label, field.api_name, false, false);
                 $('#record-fields').append(newOption).trigger('change');
-                if (["phone", "mobile"].some(el => field.api_name.toLowerCase().includes(el))) {
+                console.log("Fields Data type --> " + field.data_type);
+                if (field.data_type === "phone") {
                     newOption = new Option(field.field_label, field.api_name, false, false);
                     $('#phone-fields').append(newOption).trigger('change');
                 }
@@ -109,12 +110,8 @@ $(document).ready(function () {
             }
         });
 
-        // Get all the user 
-        requestTimeout = 0;
-        recordId.forEach(function (itemId) {
-            setTimeout(getModuleRecord, requestTimeout, recordModule, itemId, requestTimeout);
-            requestTimeout += 800;
-        });
+        // Get all the records
+        getModuleRecord(recordModule, recordId);
     });
     ZOHO.embeddedApp.init();
 });
@@ -146,7 +143,6 @@ function validateSMS() {
     senderId = $('#sms-sender-ids').select2('data');
     phoneField = $('#phone-fields').select2('data');
     text = $('#message-text').val();
-    debugger
     if (senderId == undefined || senderId[0].id == "") {
         $('#form-error-message').text("Please select valid sender id.");
         $('#form-error-alert').show();
@@ -167,22 +163,21 @@ function validateSMS() {
     return true;
 }
 
-function getModuleRecord(moduleName, itemId, timeout) {
-    console.log("Module: " + moduleName + " Record Id: " + itemId + " Timeout: " + timeout);
+function getModuleRecord(moduleName, recordIds) {
+    console.log("Module: " + moduleName + " Record Id: " + recordIds);
     ZOHO.CRM.API.getRecord({
             Entity: moduleName,
-            RecordID: itemId
-        })
-        .then(function (data) {
-            item = data.data[0];
-            item['Owner'] = item['Owner']['name'];
-            item['Modified_By'] = item['Modified_By']['name'];
-            item['Created_By'] = item['Created_By']['name'];
-            records.push(item);
-            if (timeout == 800 * (recordId.length - 1)) {
-                toggleLoading();
-            }
-        });
+            RecordID: recordIds
+        }).then(function (data) {
+            data.data.forEach(function (item) {
+                item['Owner'] = item['Owner']['name'];
+                item['Modified_By'] = item['Modified_By']['name'];
+                item['Created_By'] = item['Created_By']['name'];
+                records.push(item);
+            });
+            console.log(JSON.stringify(records));
+            toggleLoading();
+    });
 }
 
 function applyMergeField(text, record) {

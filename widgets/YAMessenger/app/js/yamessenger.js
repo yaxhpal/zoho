@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    // http://www.jasny.net/bootstrap/components/#fileinput
     $('.fileinput').fileinput({'maxSize': 5
     }).on('change.bs.fileinput', function(e) {
         $('.fileinput-content').addClass('file-bg');
@@ -52,7 +51,7 @@ $(document).ready(function () {
         $('#message-text').val($('#message-text').val().replace("${" + data.id + "}", ""));
         console.log(data);
     });
-  
+
     $('#message-form').submit(function (event) {
         payload = collateDataV2();
         sendMessageV2(payload);
@@ -81,7 +80,7 @@ $(document).ready(function () {
     $("#message-text").focusout(function () {
         $('#text-active').addClass('invisible')
     });
-    
+
     $('#settings').click(function () {
         var modal = $('#org-var-modal-src')
         modal.find('.modal-body #account-id-input').val($('#account-id').text());

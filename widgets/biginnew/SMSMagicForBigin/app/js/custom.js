@@ -2,6 +2,8 @@ var magicToast = null;
 var magicInputToast = null;
 var baseURLAPIName = "smsmagic4bigin__Base_URL";
 var phoneFieldAPIName = "smsmagic4bigin__Phone_Field";
+var accountDetailsAPIName = "smsmagic4bigin__Account_Details";
+var orgInfo = {};
 
 function saveOrgVar(apiName, apiValue) {
   let params = { apiname: apiName, value: apiValue };
@@ -11,6 +13,17 @@ function saveOrgVar(apiName, apiValue) {
     if (response.status_code === "200") {
       $("#inputdcurl").val(apiValue);
       magicToast.show();
+    }
+  });
+}
+
+function selectPhoneField(phonleFieldAPI, phoneFieldLabel) {
+  let params = {apiname: phoneFieldAPIName, value: phonleFieldAPI};
+  ZOHO.BIGIN.API.setBiginVariable(params).then(function (data) {
+    console.log(data);
+    response = JSON.parse(data);
+    if (response.status_code === "200") {
+      $("#inputPhoneField").val(phoneFieldLabel);
     }
   });
 }
@@ -38,14 +51,43 @@ function selectDataCenter(dc) {
   }
 }
 
-function selectPhoneField(phonleFieldAPI, phoneFieldLabel) {
-  let params = {apiname: phoneFieldAPIName, value: phonleFieldAPI};
-  ZOHO.BIGIN.API.setBiginVariable(params).then(function (data) {
-    console.log(data);
-    response = JSON.parse(data);
-    if (response.status_code === "200") {
-      $("#inputPhoneField").val(phoneFieldLabel);
-    }
+  /*
+  * Fetch Current User and organization information from Bigin
+  */
+function syncAccountDetails() {
+  ZOHO.BIGIN.CONFIG.getCurrentUser().then(function (response) {
+    console.log("ZOHO.BIGIN.CONFIG.getCurrentUser: " + JSON.stringify(response, null, 2));
+    orgInfo["zoho_user_id"] = response["users"][0]["id"];
+    orgInfo["zoho_user_email"] = response["users"][0]["email"];
+    ZOHO.BIGIN.CONFIG.getOrgInfo().then(function (response) {
+      console.log("ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2));
+      orgInfo["zoho_org_id"] = response["org"][0]["id"];
+      let request = {
+          url: "https://eovy85p69t52wkm.m.pipedream.net",
+          headers: {"Content-Type": "application/json"},
+          body: orgInfo
+      }
+      ZOHO.BIGIN.HTTP.post(request).then(function (data) {
+        console.log("Request response ==> " + data);
+        data = JSON.parse(data);
+        let accountid = data.Account;
+        let apiKey = data.APIKey;
+        console.log("Request response Account ==> " + accountid + " API Key ==> " + apiKey);
+        if (apiKey != undefined && apiKey.trim() !== "" && apiKey != null) {
+          console.log("Request response ==> success");
+          $("#accountid").val(accountid);
+          $("#apikey").val(apiKey);
+          let params = { apiname: accountDetailsAPIName, value: data };
+          ZOHO.BIGIN.API.setBiginVariable(params).then(function (response) {
+              console.log("ZOHO.BIGIN.API.setBiginVariable reponse => " + response);
+          });
+        } else {
+          $("#accountstatus").removeClass("text-success");
+          $("#accountstatus").addClass("text-warning");
+          $("#accountstatus").html("&#xe002;").trigger("change");
+        }
+      });
+    });text-right
   });
 }
 
@@ -67,26 +109,6 @@ $(document).ready(function () {
    */
   ZOHO.embeddedApp.on("PageLoad", function (data) {
     console.log("PageLoad is complete" + JSON.stringify(data, null, 2));
-    /*
-     * Verify if EntityInformation is Passed
-     */
-    // if (data && data.Entity) {
-    //   /*
-    //    * Fetch Information of Record passed in PageLoad
-    //    * and insert the response into the dom
-    //    */
-    //   console.log("Fetching data: " + JSON.stringify(ZOHO, null, 2));
-    //   ZOHO.BIGIN.API.getRecord({
-    //     Entity: data.Entity,
-    //     RecordID: data.EntityId,
-    //   }).then(function (response) {
-    //     console.log(
-    //       "ZOHO.BIGIN.API.getRecord: " + JSON.stringify(response, null, 2)
-    //     );
-    //     $("#recordInfo").html(JSON.stringify(response));
-    //   });
-    // }
-
     // Get all the field names for this module
     ZOHO.BIGIN.META.getFields({ Entity: "Contacts" }).then(function (data) {
       $("#phone-fields").val(null).trigger("change");
@@ -98,35 +120,6 @@ $(document).ready(function () {
         }
       });
     });
-
-    /*
-     * Fetch Current User Information from CRM
-     * and insert the response into the dom
-     */
-    // ZOHO.BIGIN.CONFIG.getCurrentUser().then(function (response) {
-    //   console.log(
-    //     "ZOHO.BIGIN.CONFIG.getCurrentUser: " + JSON.stringify(response, null, 2)
-    //   );
-    //   $("#userInfo").html(JSON.stringify(response));
-    // });
-
-    /*
-     * Fetch Current User Information from CRM
-     * and insert the response into the dom
-     */
-    // ZOHO.BIGIN.CONFIG.getCurrentUser().then(function (response) {
-    //   console.log(
-    //     "ZOHO.BIGIN.CONFIG.getCurrentUser: " + JSON.stringify(response, null, 2)
-    //   );
-    //   $("#userInfo").html(JSON.stringify(response));
-    // });
-
-    // ZOHO.BIGIN.CONFIG.getOrgInfo().then(function (response) {
-    //   console.log(
-    //     "ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2)
-    //   );
-    //   $("#orgInfo").html(JSON.stringify(response));
-    // });
 
     ZOHO.BIGIN.API.getBiginVariable({ nameSpace: baseURLAPIName }).then(function (data) {
       console.log("ZOHO.BIGIN.API.getOrgVariable: " + JSON.stringify(data, null, 2));
@@ -159,6 +152,22 @@ $(document).ready(function () {
       $("#inputPhoneField").val(phoneFieldLabel.replace("_", " "));
     });
 
+    ZOHO.BIGIN.API.getBiginVariable({ nameSpace: accountDetailsAPIName}).then(function (data) {
+      console.log("ZOHO.BIGIN.API.getOrgVariable: " + JSON.stringify(data, null, 2));
+      accountDetails = JSON.parse(data.Success.Content);
+      let accountid = accountDetails.Account;
+      let apiKey = accountDetails.APIKey;
+      console.log("Request response Account ==> " + accountid + " API Key ==> " + apiKey);
+      if (apiKey != undefined && apiKey.trim() !== "" && apiKey != null) {
+        console.log("Request response ==> success");
+        $("#accountid").val(accountid);
+        $("#apikey").val(apiKey);
+      } else {
+        $("#accountstatus").removeClass("text-success");
+        $("#accountstatus").addClass("text-warning");
+        $("#accountstatus").html("&#xe002;").trigger("change");
+      }
+    });
   });
   ZOHO.embeddedApp.init();
 });

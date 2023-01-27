@@ -20,7 +20,7 @@
           <div id="magictoast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
               <div class="toast-body">
-                <strong>Hurray!</strong> You have selected <span id="selected-dc"></span>
+                You have selected <span id="selected-dc"></span>
               </div>
               <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -46,7 +46,27 @@
     </div>
     <div class="card">
       <div class="card-header">
-        SMS Magic Data Center
+         <strong>SMS Magic Account Details</strong> <span class="align-middle"><i id="accountstatus" class="material-icons text-success">&#xe86c;</i></span>
+      </div>
+      <div class="card-body">
+        <div id="accountdetails">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" readonly id="accountid" placeholder="">
+            <label for="floatingInput">Connected Account ID</label>
+          </div>
+          <div class="form-floating">
+            <input type="text" readonly class="form-control" id="apikey" placeholder="">
+            <label for="floatingPassword">API Key</label>
+          </div>
+        </div>
+        <div id="accountdetailsoff" class="text-end mt-3">
+          <button type="button" onclick="javascript:syncAccountDetails();" class="btn btn-outline-success me-2">Sync</button>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="card-header">
+        <strong>SMS Magic Data Center</strong>
       </div>
       <div class="card-body">
         <p class="card-text">SMS Magic has 3 data centers: <strong>US</strong>, <strong>Europe</strong> and <strong>Australia</strong>.
@@ -67,10 +87,9 @@
         </div>
       </div>
     </div>
-
     <div class="card mt-3">
       <div class="card-header">
-        Default Phone Field
+        <strong>Default Phone Field</strong>
       </div>
       <div class="card-body">
         <p class="card-text">Please seletc the <strong>default phone field</strong>. This will be used by SMS Magic to

@@ -1,10 +1,10 @@
 var magicToast = null;
 
-var baseURLAPIName = "smsmagic4bigin__Base_URL";
+var baseURLAPIName = "smsmagicbigin__Base_URL";
 var BASE_URL_INPUT_ID = "#baseURL";
 
 var PHONE_FIELDS_CONTAINER_ID = "#phone-fields";
-var phoneFieldAPIName = "smsmagic4bigin__Phone_Field";
+var phoneFieldAPIName = "smsmagicbigin__Phone_Field";
 var PHONE_FIELD_INPUT_ID = "#inputPhoneField";
 
 var IS_FIELD_TOUCHED = false;

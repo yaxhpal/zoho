@@ -63,7 +63,7 @@ function syncAccountDetails() {
       console.log("ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2));
       orgInfo["zoho_org_id"] = response["org"][0]["id"];
       let request = {
-          url: "https://eovy85p69t52wkm.m.pipedream.net",
+          url: "https://eool2p37oq9j5v9.m.pipedream.net",
           headers: {"Content-Type": "application/json"},
           body: orgInfo
       }
@@ -92,9 +92,6 @@ function syncAccountDetails() {
 }
 
 $(document).ready(function () {
-  magicToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magictoast"));
-  magicInputToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magicinputtoast"));
-  console.log("Document is ready " + magicToast);
   $("#otherdcsavebtn").click(function () {
     let otherDCURL = $("#otherdcinputurl").val();
     if (otherDCURL != undefined && otherDCURL.trim() !== "" && otherDCURL != null) {
@@ -102,7 +99,6 @@ $(document).ready(function () {
       $("#selected-dc").html("Custom data center");
     }
   });
-
   /*
    * Subscribe to the EmbeddedApp onPageLoad event before
    * initializing the widget

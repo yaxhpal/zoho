@@ -1,0 +1,17 @@
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: rgb(248 248 248) !important;
+}
+
+.card-footer {
+    height: 31px;
+    padding: 0 0 0 24px;
+}
+
+.card-footer img {
+    height: 30px;
+}
+
+.card-footer span {
+    font-size: 12px;
+}

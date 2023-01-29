@@ -12,96 +12,109 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://js.zohocdn.com/biginsdk/dist/js/bigin-widget-sdk.js"></script>
   <script src="js/custom.js"></script>
+  <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container position-absolute top-0 end-0 p-3 pt-5">
-          <div id="magictoast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-              <div class="toast-body">
-                You have selected <span id="selected-dc"></span>
-              </div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+    <div id="magic-toast-container" aria-live="polite" aria-atomic="true" class="position-relative"></div>
+    <div id="magic-toast-input-container" aria-live="polite" aria-atomic="true" class="position-relative"></div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">App Settings</button>
+        <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Account</button>
+        <button class="nav-link" id="nav-help-tab" data-bs-toggle="tab" data-bs-target="#nav-help" type="button" role="tab" aria-controls="nav-help" aria-selected="false">Help</button>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="card rounded-top-0 border-top-0">
+          <div class="card-header">
+            <strong>SMS Magic Data Center</strong>
           </div>
-        </div>
-    </div>
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-      <div class="toast-container position-absolute top-0 end-0 p-3 pt-5">
-        <div id="magicinputtoast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#007aff"></rect></svg>
-            <strong class="me-auto">Set custom data center</strong>
-          </div>
-          <div class="toast-body bg-white">
+          <div class="card-body">
+            <p class="card-text">SMS Magic has 3 data centers: <strong>US</strong>, <strong>Europe</strong> and <strong>Australia</strong>.
+              We provide multi Data centers to meet the compliances such as GDPR.
+              Please select the data center to which you account with SMS Magic belong.
+              The SMS Magic Topping will use corresponding data center to route your messages.
+            </p>
             <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-sizing-default"><i class="material-icons">&#xe157;</i></span>
-              <input id="otherdcinputurl" type="text" class="form-control" aria-label="Custom DC URL" aria-describedby="inputGroup-sizing-default">
-              <button id="otherdcsavebtn" type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Save</button>
+              <span class="input-group-text"><i class="material-icons">&#xeb92;</i></span>
+              <input id="inputdcurl" type="text" class="form-control" disabled="true" placeholder="Data Center URL" aria-label="DataCenterURL" aria-describedby="basic-addon1">
+              <button id="dcseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li onclick="javascript:selectDataCenter(1);"><button id="usdc" class="dropdown-item">US Data Center</a></li>
+                <li onclick="javascript:selectDataCenter(2);"><button id="eudc" class="dropdown-item">EU Data Center</a></li>
+                <li onclick="javascript:selectDataCenter(3);"><button id="audc" class="dropdown-item">AU Data Cente</a></li>
+                <li onclick="javascript:selectDataCenter(4);"><button id="otherdc" class="dropdown-item">Others...</a></li>
+              </ul>
+            </div>
+
+            <p class="card-text">Please select the <strong>default phone field</strong>. This will be used by SMS Magic to
+            send messages. The field belogs to the Contacts module.</p>
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="material-icons">&#xe325;</i></span>
+              <input id="inputPhoneField" type="text" class="form-control" disabled="true" placeholder="Default Phone Field" aria-label="DataCenterURL" aria-describedby="basic-addon1">
+              <button id="phoneFieldseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+              <ul id="phone-fields" class="dropdown-menu dropdown-menu-end"></ul>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-         <strong>SMS Magic Account Details</strong> <span class="align-middle"><i id="accountstatus" class="material-icons text-success">&#xe86c;</i></span>
-      </div>
-      <div class="card-body">
-        <div id="accountdetails">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" readonly id="accountid" placeholder="">
-            <label for="floatingInput">Connected Account ID</label>
-          </div>
-          <div class="form-floating">
-            <input type="text" readonly class="form-control" id="apikey" placeholder="">
-            <label for="floatingPassword">API Key</label>
+          <div class="card-footer">
+            <img src="https://smsmagic-13d6c.kxcdn.com/wp-content/uploads/2020/05/SMS-Magic-Logo-Open-file_for-dark-bg.svg" alt="SMS-Magic">
+            <span>Copyright &copy; 2023, Screen-Magic Mobile Media Pvt. Ltd. All Rights Reserved.</span>
           </div>
         </div>
-        <div id="accountdetailsoff" class="text-end mt-3">
-          <button type="button" onclick="javascript:syncAccountDetails();" class="btn btn-outline-success me-2">Sync</button>
+      </div>
+      <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="card rounded-top-0 border-top-0">
+          <div class="card-header">
+             <strong>SMS Magic Account Details</strong> <span class="align-middle"><i id="accountstatus" class="material-icons text-success">&#xe86c;</i></span>
+          </div>
+          <div class="card-body">
+            <div id="accountdetails">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" readonly id="accountid" placeholder="">
+                <label for="floatingInput">Account ID</label>
+              </div>
+              <div class="form-floating">
+                <input type="text" readonly class="form-control" id="apikey" placeholder="">
+                <label for="floatingPassword">API Key</label>
+              </div>
+            </div>
+            <div id="accountdetailsoff" class="text-end mt-3">
+              <button type="button" onclick="javascript:syncAccountDetails();" class="btn btn-outline-success me-2 rounded-pill">Sync</button>
+            </div>
+          </div>
+          <div class="card-footer">
+            <img src="https://smsmagic-13d6c.kxcdn.com/wp-content/uploads/2020/05/SMS-Magic-Logo-Open-file_for-dark-bg.svg" alt="SMS-Magic">
+            <span>Copyright &copy; 2023, Screen-Magic Mobile Media Pvt. Ltd. All Rights Reserved.</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="card mt-3">
-      <div class="card-header">
-        <strong>SMS Magic Data Center</strong>
-      </div>
-      <div class="card-body">
-        <p class="card-text">SMS Magic has 3 data centers: <strong>US</strong>, <strong>Europe</strong> and <strong>Australia</strong>.
-          We provide multi Data centers to meet the compliances such as GDPR.
-          Please select the data center to which you account with SMS Magic belong.
-          The SMS Magic Topping will use corresponding data center to route your messages.
-        </p>
-        <div class="input-group mb-3">
-          <span class="input-group-text"><i class="material-icons">&#xeb92;</i></span>
-          <input id="inputdcurl" type="text" class="form-control" disabled="true" placeholder="Data Center URL" aria-label="DataCenterURL" aria-describedby="basic-addon1">
-          <button id="dcseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li onclick="javascript:selectDataCenter(1);"><button id="usdc" class="dropdown-item">US Data Center</a></li>
-            <li onclick="javascript:selectDataCenter(2);"><button id="eudc" class="dropdown-item">EU Data Center</a></li>
-            <li onclick="javascript:selectDataCenter(3);"><button id="audc" class="dropdown-item">AU Data Cente</a></li>
-            <li onclick="javascript:selectDataCenter(4);"><button id="otherdc" class="dropdown-item">Others...</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="card mt-3">
-      <div class="card-header">
-        <strong>Default Phone Field</strong>
-      </div>
-      <div class="card-body">
-        <p class="card-text">Please seletc the <strong>default phone field</strong>. This will be used by SMS Magic to
-        send messages. The field belogs to the Contacts module.</p>
-        <div class="input-group mb-3">
-          <span class="input-group-text"><i class="material-icons">&#xe325;</i></span>
-          <input id="inputPhoneField" type="text" class="form-control" disabled="true" placeholder="Default Phone Field" aria-label="DataCenterURL" aria-describedby="basic-addon1">
-          <button id="phoneFieldseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul id="phone-fields" class="dropdown-menu dropdown-menu-end"></ul>
+      <div class="tab-pane fade" id="nav-help" role="tabpanel" aria-labelledby="nav-help-tab">
+        <div class="card rounded-top-0 border-top-0">
+          <div class="card-header">
+            <strong>SMS Magic Doc Center</strong>
+          </div>
+          <div class="card-body">
+            <p class="card-text">You can get <strong>help here</strong></p>
+          </div>
+          <div class="card-footer">
+            <img src="https://smsmagic-13d6c.kxcdn.com/wp-content/uploads/2020/05/SMS-Magic-Logo-Open-file_for-dark-bg.svg" alt="SMS-Magic">
+            <span>Copyright &copy; 2023, Screen-Magic Mobile Media Pvt. Ltd. All Rights Reserved.</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <script>
+    $(function(){
+      $("#magic-toast-container").load("html/dialogs.html #magic-toast-src", function(response, status, xhr) {
+        magicToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magictoast"));
+      });
+      $("#magic-toast-input-container").load("html/dialogs.html #magic-toast-input-src", function(response, status, xhr) {
+        magicInputToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magicinputtoast"));
+      });
+    });
+  </script>
 </body>
 </html>

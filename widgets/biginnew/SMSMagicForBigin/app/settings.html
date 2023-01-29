@@ -17,7 +17,6 @@
 <body>
   <div class="container">
     <div id="magic-toast-container" aria-live="polite" aria-atomic="true" class="position-relative"></div>
-    <div id="magic-toast-input-container" aria-live="polite" aria-atomic="true" class="position-relative"></div>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">App Settings</button>
@@ -39,13 +38,12 @@
             </p>
             <div class="input-group mb-3">
               <span class="input-group-text"><i class="material-icons">&#xeb92;</i></span>
-              <input id="inputdcurl" type="text" class="form-control" disabled="true" placeholder="Data Center URL" aria-label="DataCenterURL" aria-describedby="basic-addon1">
+              <input id="baseURL" type="text" class="form-control" placeholder="Data Center URL" aria-label="DataCenterURL" aria-describedby="basic-addon1">
               <button id="dcseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li onclick="javascript:selectDataCenter(1);"><button id="usdc" class="dropdown-item">US Data Center</a></li>
-                <li onclick="javascript:selectDataCenter(2);"><button id="eudc" class="dropdown-item">EU Data Center</a></li>
-                <li onclick="javascript:selectDataCenter(3);"><button id="audc" class="dropdown-item">AU Data Cente</a></li>
-                <li onclick="javascript:selectDataCenter(4);"><button id="otherdc" class="dropdown-item">Others...</a></li>
+                <li onclick="javascript:setInputFieldValue('#baseURL', 'https://app.sms-magic.com', null);"><button class="dropdown-item">US Data Center</a></li>
+                <li onclick="javascript:setInputFieldValue('#baseURL', 'https://eu.app.sms-magic.com', null);"><button class="dropdown-item">EU Data Center</a></li>
+                <li onclick="javascript:setInputFieldValue('#baseURL', 'https://aus-app.sms-magic.com', null);"><button class="dropdown-item">AU Data Center</a></li>
               </ul>
             </div>
 
@@ -53,9 +51,13 @@
             send messages. The field belogs to the Contacts module.</p>
             <div class="input-group mb-3">
               <span class="input-group-text"><i class="material-icons">&#xe325;</i></span>
-              <input id="inputPhoneField" type="text" class="form-control" disabled="true" placeholder="Default Phone Field" aria-label="DataCenterURL" aria-describedby="basic-addon1">
+              <input id="inputPhoneField" type="hidden">
+              <input id="inputPhoneFieldDisplay" type="text" class="form-control" disabled="true" placeholder="Default Phone Field" aria-label="DataCenterURL" aria-describedby="basic-addon1">
               <button id="phoneFieldseleter" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
               <ul id="phone-fields" class="dropdown-menu dropdown-menu-end"></ul>
+            </div>
+            <div class="text-end mt-4 pe-2">
+              <button id="save-settings" disabled="true" type="button" class="btn btn-outline-secondary rounded-pill">Save</button>
             </div>
           </div>
           <div class="card-footer">
@@ -67,9 +69,26 @@
       <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class="card rounded-top-0 border-top-0">
           <div class="card-header">
-             <strong>SMS Magic Account Details</strong> <span class="align-middle"><i id="accountstatus" class="material-icons text-success">&#xe86c;</i></span>
+             <strong>SMS Magic Account Details</strong>
+             <div id="accountstatus-loading" class="spinner-grow spinner-grow-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
           </div>
           <div class="card-body">
+            <svg xmlns="http://www.w3.org/2000/svg" class="visually-hidden">
+              <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+              </symbol>
+              <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
+              </symbol>
+            </svg>
+            <div id="account-success-alert" class="alert alert-success d-flex align-items-center fade show" role="alert">
+              <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"></use></svg>
+              <div>You are connected with the following SMS Magic Account.</div>
+            </div>
+            <div id="account-failed-alert" class="alert alert-warning d-flex align-items-center fade show" role="alert">
+              <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"></use></svg>
+              <div class="me-2">You are not yet connected to SMS Magic Account. Please </div> <span id="signup-btn" data-bs-title="Signup for new SMS Magic Account" class="link-success">Sign Up</span>
+            </div>
             <div id="accountdetails">
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" readonly id="accountid" placeholder="">
@@ -80,13 +99,10 @@
                 <label for="floatingPassword">API Key</label>
               </div>
             </div>
-            <div id="accountdetailsoff" class="text-end mt-3">
-              <button type="button" onclick="javascript:syncAccountDetails();" class="btn btn-outline-success me-2 rounded-pill">Sync</button>
-            </div>
           </div>
           <div class="card-footer">
             <img src="https://smsmagic-13d6c.kxcdn.com/wp-content/uploads/2020/05/SMS-Magic-Logo-Open-file_for-dark-bg.svg" alt="SMS-Magic">
-            <span>Copyright &copy; 2023, Screen-Magic Mobile Media Pvt. Ltd. All Rights Reserved.</span>
+            <span>Screen-Magic Mobile Media Pvt. Ltd.</span>
           </div>
         </div>
       </div>
@@ -110,9 +126,6 @@
     $(function(){
       $("#magic-toast-container").load("html/dialogs.html #magic-toast-src", function(response, status, xhr) {
         magicToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magictoast"));
-      });
-      $("#magic-toast-input-container").load("html/dialogs.html #magic-toast-input-src", function(response, status, xhr) {
-        magicInputToast = bootstrap.Toast.getOrCreateInstance(document.getElementById("magicinputtoast"));
       });
     });
   </script>

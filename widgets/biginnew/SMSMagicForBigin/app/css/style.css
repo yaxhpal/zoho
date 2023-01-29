@@ -1,6 +1,6 @@
-
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     background-color: rgb(248 248 248) !important;
+    border-bottom-color: rgb(248 248 248) !important;
 }
 
 .card-footer {
@@ -14,4 +14,24 @@
 
 .card-footer span {
     font-size: 12px;
+}
+
+input {
+    transition: background 5s !important;
+}
+
+input:focus {
+    background: #d3ffd1 !important;
+}
+
+.bi {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    fill: currentcolor;
+}
+
+#signup-btn {
+    cursor: pointer;
+    text-decoration: underline;
 }

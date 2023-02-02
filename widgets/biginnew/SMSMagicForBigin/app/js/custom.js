@@ -1,6 +1,6 @@
 var magicToast = null;
-var baseURLAPIName = "smsmagic4bigin__Base_URL";
-var phoneFieldAPIName = "smsmagic4bigin__Phone_Field";
+var baseURLAPIName = "smsmagicbigin__Base_URL";
+var phoneFieldAPIName = "smsmagicbigin__Phone_Field";
 var BASE_URL_INPUT_ID = "#baseURL";
 var PHONE_FIELDS_CONTAINER_ID = "#phone-fields";
 var PHONE_FIELD_INPUT_ID = "#inputPhoneField";
@@ -30,22 +30,8 @@ function setInputFieldValue(inputFieldId, inputFieldValue, inputFieldLabel) {
   $(SAVE_SETTINGS_BTN_ID).removeAttr('disabled');
 }
 
-
-function fetchAccountDetails(org_id, user_id, email) {
-  var func_name = "smsmagic4bigin__fetchsmsmagicaccountdetails";
-  var req_data = {
-    "baseURL": $(BASE_URL_INPUT_ID).val(),
-    "zoho_org_id" : org_id,
-    "zoho_user_id" : user_id,
-    "zoho_user_email": email
-  };
-  ZOHO.BIGIN.FUNCTIONS.execute(func_name, req_data) .then(function(data){
-    console.log("REST API function invoked from widget: " + JSON.stringify(data, null, 2));
-  })
-}
-
+ // Subscribe to the EmbeddedApp onPageLoad event before initializing the widget
 $(document).ready(function () {
-  // Subscribe to the EmbeddedApp onPageLoad event before initializing the widget
   ZOHO.embeddedApp.on("PageLoad", function (data) {
     console.log("PageLoad is complete" + JSON.stringify(data, null, 2));
     // Get all the field names for this module
@@ -124,7 +110,6 @@ $(document).ready(function () {
           console.log("ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2));
           orgInfo["zoho_org_id"] = response["org"][0]["id"];
           orgInfo["product"] = "bigin";
-          fetchAccountDetails(orgInfo["zoho_org_id"], orgInfo["zoho_user_id"], orgInfo["zoho_user_email"]);
           let request = {
               url: `${baseURL}${SMS_MAGIC_ACCOUNT_API_PATH}`,
               headers: {"Content-Type": "application/json"},

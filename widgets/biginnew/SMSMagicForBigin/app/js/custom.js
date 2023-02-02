@@ -1,19 +1,13 @@
 var magicToast = null;
-
-var baseURLAPIName = "smsmagicbigin__Base_URL";
+var baseURLAPIName = "smsmagic4bigin__Base_URL";
+var phoneFieldAPIName = "smsmagic4bigin__Phone_Field";
 var BASE_URL_INPUT_ID = "#baseURL";
-
 var PHONE_FIELDS_CONTAINER_ID = "#phone-fields";
-var phoneFieldAPIName = "smsmagicbigin__Phone_Field";
 var PHONE_FIELD_INPUT_ID = "#inputPhoneField";
-
 var IS_FIELD_TOUCHED = false;
-
 var SAVE_SETTINGS_BTN_ID = "#save-settings";
-var HTTP_SUCCESS_CODE = "200";
-var SMS_MAGIC_ACCOUNT_API_PATH = "/api/v2/bigin/account"
-
-var account_syncing = false;
+var SMS_MAGIC_ACCOUNT_API_PATH = "/api/v2/zoho/account"
+var ACCOUNT_SYNC = false;
 
 // Save Bigin variable
 function saveOrgVar(apiName, apiValue) {
@@ -25,7 +19,6 @@ function saveOrgVar(apiName, apiValue) {
 // Set Input field value
 function setInputFieldValue(inputFieldId, inputFieldValue, inputFieldLabel) {
   if ($(inputFieldId).val() === inputFieldValue) {
-    console.warn("No change detected");
     return;
   }
   $(inputFieldId).val(inputFieldValue);
@@ -38,12 +31,10 @@ function setInputFieldValue(inputFieldId, inputFieldValue, inputFieldLabel) {
 }
 
 $(document).ready(function () {
-  /*
-   * Subscribe to the EmbeddedApp onPageLoad event before initializing the widget
-   */
+
+  // Subscribe to the EmbeddedApp onPageLoad event before initializing the widget
   ZOHO.embeddedApp.on("PageLoad", function (data) {
     console.log("PageLoad is complete" + JSON.stringify(data, null, 2));
-
     // Get all the field names for this module
     ZOHO.BIGIN.META.getFields({ Entity: "Contacts" }).then(function (data) {
       $(PHONE_FIELDS_CONTAINER_ID).val(null).trigger("change");
@@ -55,13 +46,11 @@ $(document).ready(function () {
         }
       });
     });
-
     // Get Base URL variable value
     ZOHO.BIGIN.API.getBiginVariable({ nameSpace: baseURLAPIName }).then(function (data) {
       console.log("ZOHO.BIGIN.API.getOrgVariable: " + JSON.stringify(data, null, 2));
       $(BASE_URL_INPUT_ID).val(data.Success.Content);
     });
-
     // Get Phone Field variable value
     ZOHO.BIGIN.API.getBiginVariable({ nameSpace: phoneFieldAPIName }).then(function (data) {
       console.log("ZOHO.BIGIN.API.getOrgVariable: " + JSON.stringify(data, null, 2));
@@ -70,6 +59,11 @@ $(document).ready(function () {
     });
   });
   ZOHO.embeddedApp.init();
+  
+  $(BASE_URL_INPUT_ID).change(function(){
+    IS_FIELD_TOUCHED = true;
+    $(SAVE_SETTINGS_BTN_ID).removeAttr('disabled');
+  });
 
   // Save the configured settings
   $(SAVE_SETTINGS_BTN_ID).click(function () {
@@ -81,7 +75,7 @@ $(document).ready(function () {
       console.warn(`Base URL = ${baseURL}, Phone field = ${phoneField}`);
       if (baseURL.trim() != "") {
         saveOrgVar(baseURLAPIName, baseURL);
-        account_syncing = false;
+        ACCOUNT_SYNC = false;
       }
       if (phoneField.trim() != "") {
         saveOrgVar(phoneFieldAPIName, phoneField);
@@ -93,15 +87,15 @@ $(document).ready(function () {
   $("#signup-btn").click(function () {
     let baseURL = $(BASE_URL_INPUT_ID).val();
     window.open(`${baseURL}/trial`, "_blank");
-    account_syncing = false;
+    ACCOUNT_SYNC = false;
   });
 
   // Fetch Current User and organization information from Bigin
   $("#nav-home-tab").click(function () {
-    if (account_syncing) {
+    if (ACCOUNT_SYNC) {
       return;
     }
-    account_syncing = true;
+    ACCOUNT_SYNC = true;
     let baseURL = $(BASE_URL_INPUT_ID).val();
     let orgInfo = {};
     $("#account-failed-alert").addClass("visually-hidden");
@@ -127,8 +121,8 @@ $(document).ready(function () {
             let accountSetup = false;
             try {
               data = JSON.parse(data);
-              let accountid = data.Account;
-              let apiKey = data.APIKey;
+              let accountid = data.account_id;
+              let apiKey = data.api_key;
               console.log("Request response Account ==> " + accountid + " API Key ==> " + apiKey);
               if (apiKey != undefined && apiKey.trim() !== "" && apiKey != null) {
                 console.log("Request response ==> success");

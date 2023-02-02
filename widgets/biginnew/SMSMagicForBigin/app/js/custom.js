@@ -30,8 +30,21 @@ function setInputFieldValue(inputFieldId, inputFieldValue, inputFieldLabel) {
   $(SAVE_SETTINGS_BTN_ID).removeAttr('disabled');
 }
 
-$(document).ready(function () {
 
+function fetchAccountDetails(org_id, user_id, email) {
+  var func_name = "smsmagic4bigin__fetchsmsmagicaccountdetails";
+  var req_data = {
+    "baseURL": $(BASE_URL_INPUT_ID).val(),
+    "zoho_org_id" : org_id,
+    "zoho_user_id" : user_id,
+    "zoho_user_email": email
+  };
+  ZOHO.BIGIN.FUNCTIONS.execute(func_name, req_data) .then(function(data){
+    console.log("REST API function invoked from widget: " + JSON.stringify(data, null, 2));
+  })
+}
+
+$(document).ready(function () {
   // Subscribe to the EmbeddedApp onPageLoad event before initializing the widget
   ZOHO.embeddedApp.on("PageLoad", function (data) {
     console.log("PageLoad is complete" + JSON.stringify(data, null, 2));
@@ -59,7 +72,7 @@ $(document).ready(function () {
     });
   });
   ZOHO.embeddedApp.init();
-  
+
   $(BASE_URL_INPUT_ID).change(function(){
     IS_FIELD_TOUCHED = true;
     $(SAVE_SETTINGS_BTN_ID).removeAttr('disabled');
@@ -111,6 +124,7 @@ $(document).ready(function () {
           console.log("ZOHO.BIGIN.CONFIG.getOrgInfo: " + JSON.stringify(response, null, 2));
           orgInfo["zoho_org_id"] = response["org"][0]["id"];
           orgInfo["product"] = "bigin";
+          fetchAccountDetails(orgInfo["zoho_org_id"], orgInfo["zoho_user_id"], orgInfo["zoho_user_email"]);
           let request = {
               url: `${baseURL}${SMS_MAGIC_ACCOUNT_API_PATH}`,
               headers: {"Content-Type": "application/json"},

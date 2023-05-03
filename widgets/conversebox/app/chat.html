@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Widget</title>
+
+  <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' rel='stylesheet'>
+  <link href="css/chat.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/jquery-dateformat.min.js"></script>
+  <script src="js/ZohoEmbededAppSDK.min.js"></script>
+  <script src="js/custom.js"></script>
+</head>
+
+<body>
+  <div class="chat-container clearfix">
+    <div class="chat">
+      <div class="chat-history">
+        <ul></ul>
+      </div>
+    </div>
+  </div>
+
+  <script id="message-template" type="text/x-handlebars-template">
+    <li class="clearfix">
+      <div class="message-data align-right">
+        <span class="message-data-time" >{{time}}</span> &nbsp; &nbsp;
+        <span class="message-data-name" >{{author}}</span> <i class="fa fa-circle me"></i>
+      </div>
+      <div class="message other-message float-right">
+        {{message}}
+      </div>
+    </li>
+  </script>
+
+  <script id="message-response-template" type="text/x-handlebars-template">
+    <li>
+      <div class="message-data">
+        <span class="message-data-name"><i class="fa fa-circle online"></i> {{author}}</span>
+        <span class="message-data-time">{{time}}</span>
+      </div>
+      <div class="message my-message">
+        {{message}}
+      </div>
+    </li>
+  </script>
+</body>
+</html>
